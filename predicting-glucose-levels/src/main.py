@@ -1,3 +1,4 @@
+import os
 from src.data.ingestion.ingester import Ingester
 from src.data.ingestion.loader.nightscout_loader import NightscoutLoader
 from src.data.ingestion.storage.mongo_storage import MongoStorage
@@ -16,7 +17,8 @@ def cli():
 @cli.command()
 def ingest():
     loader = NightscoutLoader()
-    storage = MongoStorage()
+    db = os.getenv("MONGO_DB")
+    storage = MongoStorage(db)
     ingester = Ingester(loader, storage)
     ingester.ingest()
 

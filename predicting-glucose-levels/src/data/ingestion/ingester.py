@@ -24,10 +24,12 @@ class Ingester:
 
     def ingest(self):
         """
-        Ingest a new batch of data. Load the window of the storage, upsert all measurements, update
-        the last runmoment.
+        Ingest a new batch of data.
+        Loop over all tables in the storage, and ingest the data.
+        For each data type, read and write runmoments.
         """
-        start, end = self.storage.get_window()
-        data = self.data_loader.load(start, end)
-        self.storage.upsert_measurements(data)
-        self.storage.set_last_runmoment(end)
+        for table in self.storage.TABLES:
+            start, end = self.storage.get_window(table)
+            data = self.data_loader.load(start, end, table)
+            self.storage.upsert(data, table)
+            self.storage.set_last_runmoment(table, end)
