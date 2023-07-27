@@ -5,23 +5,14 @@ from datetime import datetime
 class AbstractStorage(ABC):
     """
     AbstractStorage is an abstract class that defines the interface for a storage class.
-
-    Attributes:
-        TABLES: A dictionary of tables to store data in. The key is the source name, the value is a
-            dictionary with the table name, key column and timestamp column.
     """
-
-    TABLES = {
-        "entries": {"table": "measurements", "key": "_id", "timestamp": "date"},
-        "treatments": {"table": "treatments", "key": "_id", "timestamp": "sysTime"},
-    }
 
     def __init__(self) -> None:
         raise NotImplementedError
     
 
     @abstractmethod
-    def _upsert(self, data: List, table: str, key_col: str, timestamp_col: str) -> None:
+    def upsert(self, data: List, table: str, key_col: str, timestamp_col: str) -> None:
         """
         Upsert a list of rows into a table. Use the key_col to identify the row and the timestamp_col to
         determine the order of the rows.
@@ -60,19 +51,10 @@ class AbstractStorage(ABC):
 
     def set_last_runmoment(self, source: str, timestamp: datetime) -> None:
         """
-        Set the last timestamp in the runmoments table. Use the _upsert method.
+        Set the last timestamp in the runmoments table. Use the upsert method.
         """
         data = [{"source": source, "timestamp": timestamp}]
-        self._upsert(data, "runmoments", "source", "timestamp")
-    
-
-    def upsert(self, data: List, source_name: str) -> None:
-        """
-        Upsert a list of rows into a table. Get table name, key_col, and timestamp_col from the TABLES dict, then use the
-        _upsert method.
-        """
-        destination_name, key_col, timestamp_col = self.TABLES[source_name].values()
-        self._upsert(data, destination_name, key_col, timestamp_col)    
+        self.upsert(data, "runmoments", "source", "timestamp")
 
     def get_window(self, source: str) -> Tuple[datetime, datetime]:
         """

@@ -1,0 +1,14 @@
+[
+    {
+        "source_name": "entries",
+        "destination_name": "measurements",
+        "key_col": "_id",
+        "timestamp_col": "date"
+    },
+    {
+        "source_name": "treatments",
+        "destination_name": "treatments",
+        "key_col": "_id",
+        "timestamp_col": "sysTime"
+    }
+]
