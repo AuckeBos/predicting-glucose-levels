@@ -30,13 +30,13 @@ class NightscoutLoader(AbstractLoader):
 
         self.url = os.getenv("NIGHTSCOUT_URI")
 
-    def _load(
+    def load(
         self, start: datetime, end: datetime, endpoint: str, timestamp_col: str
     ) -> List:
         """
         Load entities from endpoint between start and end timestamps.
         """
-        url = f"{self.url}{endpoint}"
+        url = f"{self.url}/{endpoint}"
         params = {
             f"find[{timestamp_col}][$gte]": start.isoformat(),
             f"find[{timestamp_col}][$lte]": end.isoformat(),

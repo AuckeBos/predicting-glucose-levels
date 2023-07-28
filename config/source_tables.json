@@ -1,14 +1,15 @@
 [
     {
-        "source_name": "entries",
-        "destination_name": "measurements",
+        "endpoint": "entries",
+        "destination_name": "entries",
         "key_col": "_id",
         "timestamp_col": "date"
+        # todo: Diff between timestamp col and ordering col 
     },
     {
-        "source_name": "treatments",
+        "endpoint": "treatments",
         "destination_name": "treatments",
         "key_col": "_id",
-        "timestamp_col": "sysTime"
+        "timestamp_col": "timestamp"
     }
 ]
