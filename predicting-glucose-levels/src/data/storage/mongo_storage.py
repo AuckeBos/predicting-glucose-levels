@@ -6,6 +6,7 @@ from pymongo.collection import Collection
 from src.data.storage.abstract_storage import AbstractStorage
 from datetime import datetime
 
+
 class MongoStorage(AbstractStorage):
     """
     The MongoStorage class is used to store data in a MongoDB database.
