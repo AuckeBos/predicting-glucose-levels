@@ -22,12 +22,11 @@ class Ingester:
     data_loader: AbstractLoader
     storage: AbstractStorage
     logger: Logger
-    
+
     def __init__(self, data_loader: AbstractLoader, storage: AbstractStorage):
         self.data_loader = data_loader
         self.storage = storage
         self.logger = get_logger("Ingester")
-
 
     def ingest(self, tables: List[SourceTable]):
         """
@@ -40,8 +39,12 @@ class Ingester:
             start, end = self.storage.get_window(table.source_name)
             self.logger.info(f"Ingesting {table.source_name} from {start} to {end}")
             data = self.data_loader.load(start, end, table.source_name)
-            self.logger.info(f"Ingested {len(data)} rows for {table.source_name} during window {start} to {end}")
-            self.storage.upsert(data, table.destination_name, table.key_col, table.timestamp_col)
+            self.logger.info(
+                f"Ingested {len(data)} rows for {table.source_name} during window {start} to {end}"
+            )
+            self.storage.upsert(
+                data, table.destination_name, table.key_col, table.timestamp_col
+            )
             self.storage.set_last_runmoment(table.source_name, end)
             self.logger.info(f"Updated end timestamp for {table.source_name} to {end}")
         self.logger.info("Done ingesting")

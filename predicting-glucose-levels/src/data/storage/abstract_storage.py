@@ -2,6 +2,7 @@ from abc import abstractmethod, ABC
 from typing import List, Optional, Tuple
 from datetime import datetime
 
+
 class AbstractStorage(ABC):
     """
     AbstractStorage is an abstract class that defines the interface for a storage class.
@@ -9,7 +10,6 @@ class AbstractStorage(ABC):
 
     def __init__(self) -> None:
         raise NotImplementedError
-    
 
     @abstractmethod
     def upsert(self, data: List, table: str, key_col: str, timestamp_col: str) -> None:
@@ -17,7 +17,7 @@ class AbstractStorage(ABC):
         Upsert a list of rows into a table. Use the key_col to identify the row and the timestamp_col to
         determine the order of the rows.
         """
-        raise NotImplementedError    
+        raise NotImplementedError
 
     @abstractmethod
     def find(self, table: str, query: dict, sort: List[str], asc: bool = True) -> List:
@@ -32,14 +32,15 @@ class AbstractStorage(ABC):
         """
         raise NotImplementedError
 
-    def find_one(self, table: str, query: dict, sort: List[str] = [], asc: bool = True) -> Optional[dict]:
+    def find_one(
+        self, table: str, query: dict, sort: List[str] = [], asc: bool = True
+    ) -> Optional[dict]:
         """
         Find one row in a table that matches the query.
         """
         result = self.find(table, query, sort, asc)
         return result[0] if result else None
 
-    
     def get_last_runmoment(self, source: str) -> datetime:
         """
         Get the last timestamp from the runmoments table. This is used to determine the window of data
@@ -47,7 +48,6 @@ class AbstractStorage(ABC):
         """
         result = self.find_one("runmoments", {"source": source})
         return result["timestamp"] if result else datetime(2022, 1, 1)
-    
 
     def set_last_runmoment(self, source: str, timestamp: datetime) -> None:
         """

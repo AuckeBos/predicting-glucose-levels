@@ -29,7 +29,9 @@ class AbstractLoader(ABC):
         return self._load(start, end, path, timestamp)
 
     @abstractmethod
-    def _load(self, start: datetime, end: datetime, endpoint: str, timestamp_col: str) -> List:
+    def _load(
+        self, start: datetime, end: datetime, endpoint: str, timestamp_col: str
+    ) -> List:
         """
         Load measurements from a data source between the start and end timestamps. Use the endpoint and
         timestamp to determine the correct endpoint and timestamp column.
