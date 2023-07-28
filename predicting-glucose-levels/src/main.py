@@ -7,6 +7,7 @@ from src.data.storage.mongo_storage import MongoStorage
 from src.helpers.general import PROJECT_DIR, load_env, get_logger
 import click
 
+
 def initialize():
     load_env()
 
