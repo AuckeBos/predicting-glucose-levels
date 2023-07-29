@@ -1,10 +1,11 @@
 import os
-from typing import List
-from pymongo import MongoClient
-from pymongo.database import Database
-from pymongo.collection import Collection
-from src.data.storage.abstract_storage import AbstractStorage
 from datetime import datetime
+from typing import List
+
+from pymongo import MongoClient
+from pymongo.collection import Collection
+from pymongo.database import Database
+from src.data.storage.abstract_storage import AbstractStorage
 
 
 class MongoStorage(AbstractStorage):
