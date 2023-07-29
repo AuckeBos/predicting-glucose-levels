@@ -12,7 +12,7 @@ class AbstractStorage(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def upsert(self, data: List, table: str, key_col: str, timestamp_col: str) -> None:
+    def _upsert(self, data: List, table: str, key_col: str, timestamp_col: str) -> None:
         """
         Upsert a list of rows into a table. Use the key_col to identify the row and the timestamp_col to
         determine the order of the rows.
@@ -20,7 +20,7 @@ class AbstractStorage(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def insert(self, data: List, table: str) -> None:
+    def _insert(self, data: List, table: str) -> None:
         """
         Insert a list of rows into a table.
         """
@@ -38,6 +38,22 @@ class AbstractStorage(ABC):
             asc: Whether to sort ascending or descending.
         """
         raise NotImplementedError
+
+    def upsert(self, data: List, table: str, key_col: str, timestamp_col: str) -> None:
+        """
+        Add updated_at, and then call _upsert.
+        """
+        updated_at = datetime.utcnow()
+        data = map(lambda x: {**x, "updated_at": updated_at}, data)
+        self._upsert(data, table, key_col, timestamp_col)
+
+    def insert(self, data: List, table: str) -> None:
+        """
+        Add inserted_at, and then call _insert.
+        """
+        inserted_at = datetime.utcnow()
+        data = map(lambda x: {**x, "inserted_at": inserted_at}, data)
+        self._insert(data, table)
 
     def find_one(
         self, table: str, query: dict, sort: List[str] = [], asc: bool = True
