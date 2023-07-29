@@ -46,7 +46,21 @@ class MongoStorage(AbstractStorage):
     def upsert(self, data: List, table: str, key_col: str, timestamp_col: str) -> None:
         """
         Upsert each item. For now, simply loop over them and insert each one separately.
+        Also add an updated_at column.
         """
+        updated_at = datetime.utcnow()
         table = self.db[table]
         for row in data:
+            row["updated_at"] = updated_at
             table.update_one({key_col: row[key_col]}, {"$set": row}, upsert=True)
+
+    def insert(self, data: List, table: str) -> None:
+        """
+        Insert all items in the data list.
+        Also add an inserted_at column.
+        """
+        inserted_at = datetime.utcnow()
+        data = map(lambda x: {**x, "inserted_at": inserted_at}, data)
+        if data:
+            table = self.db[table]
+            table.insert_many(data)

@@ -1,15 +1,14 @@
 [
     {
         "endpoint": "entries",
-        "destination_name": "entries",
         "key_col": "_id",
-        "timestamp_col": "date"
-        # todo: Diff between timestamp col and ordering col 
+        "timestamp_col": "dateString",
+        "destination_name": "entries"
     },
     {
         "endpoint": "treatments",
-        "destination_name": "treatments",
         "key_col": "_id",
-        "timestamp_col": "timestamp"
+        "timestamp_col": "sysTime",
+        "destination_name": "treatments"
     }
 ]

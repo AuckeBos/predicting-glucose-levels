@@ -20,6 +20,13 @@ class AbstractStorage(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def insert(self, data: List, table: str) -> None:
+        """
+        Insert a list of rows into a table.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
     def find(self, table: str, query: dict, sort: List[str], asc: bool = True) -> List:
         """
         Find rows in a table that match the query.
