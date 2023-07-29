@@ -28,7 +28,9 @@ class MongoStorage(AbstractStorage):
         self.client = client
         self.db = self.client[database]
 
-    def find(self, table: str, query: dict, sort: List[str], asc: bool = True) -> List:
+    def find(
+        self, table: str, query: dict, sort: List[str] = None, asc: bool = True
+    ) -> List:
         """
         Find rows in a table that match the query. A query is a dictionary of key-equals-value pairs.
         """

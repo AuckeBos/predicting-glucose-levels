@@ -23,13 +23,13 @@ def cli():
 def ingest():
     loader = NightscoutLoader()
     db = os.getenv("MONGO_DB")
-    ingester = Ingester(loader, storage)
     client = MongoClient(
         os.getenv("MONGO_URI"),
         username=os.getenv("MONGO_USER"),
         password=os.getenv("MONGO_PASSWORD"),
     )
     storage = MongoStorage(client, db)
+    ingester = Ingester(loader, storage)
     source_tables = PROJECT_DIR / "config" / "source_tables.json"
     source_tables = [SourceTable(**i) for i in json.load(open(source_tables))]
     ingester.ingest(source_tables)
