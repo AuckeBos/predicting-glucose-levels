@@ -20,17 +20,12 @@ class MongoStorage(AbstractStorage):
     client: MongoClient
     db: Database
 
-    def __init__(self, database: str):
+    def __init__(self, client: MongoClient, database: str):
         """
         Initialize the MongoStorage class.
         Read credentials from env.
         """
-        self.client = MongoClient(
-            os.getenv("MONGO_URI"),
-            username=os.getenv("MONGO_USER"),
-            password=os.getenv("MONGO_PASSWORD"),
-        )
-
+        self.client = client
         self.db = self.client[database]
 
     def find(self, table: str, query: dict, sort: List[str], asc: bool = True) -> List:
