@@ -1,11 +1,12 @@
 import json
 import os
+
+import click
 from src.data.ingestion.ingester import Ingester
 from src.data.ingestion.loader.nightscout_loader import NightscoutLoader
 from src.data.ingestion.source_table import SourceTable
 from src.data.storage.mongo_storage import MongoStorage
-from src.helpers.general import PROJECT_DIR, load_env, get_logger
-import click
+from src.helpers.general import PROJECT_DIR, get_logger, load_env
 
 
 def initialize():

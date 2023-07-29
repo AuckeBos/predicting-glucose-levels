@@ -1,7 +1,8 @@
+import logging
 import os
+
 from anyio import Path
 from dotenv import find_dotenv, load_dotenv
-import logging
 
 PROJECT_DIR = Path(os.path.dirname(os.path.abspath(__file__))) / ".." / ".." / ".."
 LOGS_DIR = PROJECT_DIR / "logs"

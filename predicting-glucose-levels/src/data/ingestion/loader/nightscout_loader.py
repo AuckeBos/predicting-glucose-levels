@@ -1,8 +1,9 @@
 import os
-from src.data.ingestion.loader.abstract_loader import AbstractLoader
 from datetime import datetime
 from typing import List
+
 import requests
+from src.data.ingestion.loader.abstract_loader import AbstractLoader
 
 
 class NightscoutLoader(AbstractLoader):

@@ -1,6 +1,6 @@
-from abc import abstractmethod, ABC
-from typing import List, Optional, Tuple
+from abc import ABC, abstractmethod
 from datetime import datetime
+from typing import List, Optional, Tuple
 
 
 class AbstractStorage(ABC):
