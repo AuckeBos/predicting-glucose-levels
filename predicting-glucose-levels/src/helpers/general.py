@@ -1,7 +1,10 @@
+import logging
 import os
+from datetime import datetime
+
+import pytz
 from anyio import Path
 from dotenv import find_dotenv, load_dotenv
-import logging
 
 PROJECT_DIR = Path(os.path.dirname(os.path.abspath(__file__))) / ".." / ".." / ".."
 LOGS_DIR = PROJECT_DIR / "logs"
@@ -21,3 +24,7 @@ def get_logger(name: str):
     logger.addHandler(fhandler)
     logger.setLevel(logging.DEBUG)
     return logger
+
+
+def now():
+    return datetime.now(tz=pytz.timezone("Europe/Amsterdam"))

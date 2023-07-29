@@ -1,14 +1,14 @@
 [
     {
-        "source_name": "entries",
-        "destination_name": "measurements",
+        "endpoint": "entries",
         "key_col": "_id",
-        "timestamp_col": "date"
-    },
+        "timestamp_col": "dateString",
+        "destination_name": "entries"
+    },    
     {
-        "source_name": "treatments",
-        "destination_name": "treatments",
+        "endpoint": "treatments",
         "key_col": "_id",
-        "timestamp_col": "sysTime"
+        "timestamp_col": "created_at",
+        "destination_name": "treatments"
     }
 ]
