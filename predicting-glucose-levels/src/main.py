@@ -28,6 +28,7 @@ def ingest():
         username=os.getenv("MONGO_USER"),
         password=os.getenv("MONGO_PASSWORD"),
     )
+    # todo: fix: timestamp of runomment not loaded
     storage = MongoStorage(client, db)
     ingester = Ingester(loader, storage)
     source_tables = PROJECT_DIR / "config" / "source_tables.json"
