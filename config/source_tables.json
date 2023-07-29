@@ -4,11 +4,11 @@
         "key_col": "_id",
         "timestamp_col": "dateString",
         "destination_name": "entries"
-    },
+    },    
     {
         "endpoint": "treatments",
         "key_col": "_id",
-        "timestamp_col": "sysTime",
+        "timestamp_col": "created_at",
         "destination_name": "treatments"
     }
 ]

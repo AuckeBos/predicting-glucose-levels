@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List, Optional, Tuple
 
+from src.helpers.general import now
+
 
 class AbstractStorage(ABC):
     """
@@ -43,7 +45,7 @@ class AbstractStorage(ABC):
         """
         Add updated_at, and then call _upsert.
         """
-        updated_at = datetime.utcnow()
+        updated_at = now()
         data = map(lambda x: {**x, "updated_at": updated_at}, data)
         self._upsert(data, table, key_col, timestamp_col)
 
@@ -51,7 +53,7 @@ class AbstractStorage(ABC):
         """
         Add inserted_at, and then call _insert.
         """
-        inserted_at = datetime.utcnow()
+        inserted_at = now()
         data = map(lambda x: {**x, "inserted_at": inserted_at}, data)
         self._insert(data, table)
 
