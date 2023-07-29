@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 @dataclass
 class SourceTable:
-    source_name: str
-    destination_name: str
+    endpoint: str
     key_col: str
     timestamp_col: str
+    destination_name: str
