@@ -37,6 +37,9 @@ class Ingester:
         self.logger.info(f"Ingesting {len(tables)} tables")
         for table in tables:
             start, end = self.storage.get_window(table.destination_name)
+            self.logger.debug(
+                f"Ingesting {table.destination_name} from {start} to {end}"
+            )
             data = self.data_loader.load(
                 start, end, table.endpoint, table.timestamp_col
             )
@@ -50,4 +53,4 @@ class Ingester:
             self.logger.info(
                 f"Updated end timestamp for {table.destination_name} to {end}"
             )
-        self.logger.info("Done ingesting")
+        self.logger.debug("Done ingesting")
