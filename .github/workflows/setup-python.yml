@@ -2,7 +2,6 @@ name: Job template
 defaults:
   run:
     shell: bash
-runs-on: ubuntu-20.04
 runs:
   using: "composite"
   steps:
