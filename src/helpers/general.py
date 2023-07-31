@@ -18,6 +18,7 @@ def load_env():
 def get_logger(name: str):
     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logger = logging.getLogger(name)
+    os.makedirs(LOGS_DIR, exist_ok=True)
     fhandler = logging.FileHandler(filename=LOGS_FILE, mode="a")
     formatter = logging.Formatter(log_fmt)
     fhandler.setFormatter(formatter)
