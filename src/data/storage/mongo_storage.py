@@ -5,6 +5,7 @@ from typing import List
 from pymongo import MongoClient
 from pymongo.collection import Collection
 from pymongo.database import Database
+
 from src.data.storage.abstract_storage import AbstractStorage
 
 
@@ -20,20 +21,17 @@ class MongoStorage(AbstractStorage):
     client: MongoClient
     db: Database
 
-    def __init__(self, database: str):
+    def __init__(self, client: MongoClient, database: str):
         """
         Initialize the MongoStorage class.
         Read credentials from env.
         """
-        self.client = MongoClient(
-            os.getenv("MONGO_URI"),
-            username=os.getenv("MONGO_USER"),
-            password=os.getenv("MONGO_PASSWORD"),
-        )
-
+        self.client = client
         self.db = self.client[database]
 
-    def find(self, table: str, query: dict, sort: List[str], asc: bool = True) -> List:
+    def find(
+        self, table: str, query: dict, sort: List[str] = None, asc: bool = True
+    ) -> List:
         """
         Find rows in a table that match the query. A query is a dictionary of key-equals-value pairs.
         """

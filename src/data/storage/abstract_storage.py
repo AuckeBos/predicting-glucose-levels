@@ -29,7 +29,9 @@ class AbstractStorage(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def find(self, table: str, query: dict, sort: List[str], asc: bool = True) -> List:
+    def find(
+        self, table: str, query: dict, sort: List[str] = None, asc: bool = True
+    ) -> List:
         """
         Find rows in a table that match the query.
 

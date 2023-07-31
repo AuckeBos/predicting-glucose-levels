@@ -2,6 +2,8 @@ import json
 import os
 
 import click
+from pymongo import MongoClient
+
 from src.data.ingestion.ingester import Ingester
 from src.data.ingestion.loader.nightscout_loader import NightscoutLoader
 from src.data.ingestion.source_table import SourceTable
@@ -22,7 +24,12 @@ def cli():
 def ingest():
     loader = NightscoutLoader()
     db = os.getenv("MONGO_DB")
-    storage = MongoStorage(db)
+    client = MongoClient(
+        os.getenv("MONGO_URI"),
+        username=os.getenv("MONGO_USER"),
+        password=os.getenv("MONGO_PASSWORD"),
+    )
+    storage = MongoStorage(client, db)
     ingester = Ingester(loader, storage)
     source_tables = PROJECT_DIR / "config" / "source_tables.json"
     source_tables = [SourceTable(**i) for i in json.load(open(source_tables))]

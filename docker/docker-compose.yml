@@ -19,6 +19,6 @@ services:
       ME_CONFIG_MONGODB_SERVER: mongodb
     depends_on:
       - mongodb
-
+    restart: unless-stopped
 volumes:
   mongodb_data_container:
