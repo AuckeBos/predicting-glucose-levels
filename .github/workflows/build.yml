@@ -2,7 +2,7 @@ name: build
 on: [pull_request, workflow_dispatch]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
     - run: pipx install poetry
@@ -10,11 +10,6 @@ jobs:
       with:
         python-version: '3.9'
         cache: 'poetry'    
-    # Need llvm for package
-    - run: |
-        sudo add-apt-repository 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main'
-        sudo apt-get update
-        sudo apt-get install llvm-10
     - run: poetry install
     - run: poetry run black --check --verbose .
     - run: poetry run isort --check .
