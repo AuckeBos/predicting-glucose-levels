@@ -2,7 +2,7 @@ name: build
 on: [pull_request]
 jobs:
   lint:
-    uses: ./.github/workflows/setup-python.yml
+    needs: ./.github/workflows/setup-python.yml
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
