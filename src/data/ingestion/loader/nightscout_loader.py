@@ -3,10 +3,12 @@ from datetime import datetime
 from typing import List
 
 import requests
+from kink import inject
 
 from src.data.ingestion.loader.abstract_loader import AbstractLoader
 
 
+@inject
 class NightscoutLoader(AbstractLoader):
     """
     NightscoutLoader is a class that defines logic to load entires and treatments from a Nightscout API.
@@ -19,18 +21,17 @@ class NightscoutLoader(AbstractLoader):
     url: str
     session: requests.Session
 
-    def __init__(self):
+    def __init__(self, nightscout_uri: str, nightscout_secret: str):
         """
         Create a session with the Nightscout API.
         Read credentials from env
         """
         session = requests.Session()
         session.headers.update({"Accept": "application/json"})
-        secret = os.getenv("NIGHTSCOUT_SECRET")
-        session.headers.update({"api_secret": secret})
+        session.headers.update({"api_secret": nightscout_secret})
         self.session = session
 
-        self.url = os.getenv("NIGHTSCOUT_URI")
+        self.url = nightscout_uri
 
     def load(
         self, start: datetime, end: datetime, endpoint: str, timestamp_col: str

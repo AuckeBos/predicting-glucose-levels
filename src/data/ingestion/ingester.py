@@ -2,6 +2,7 @@ import os
 from logging import Logger
 from typing import List
 
+from kink import inject
 from pymongo import MongoClient
 
 from src.data.ingestion.loader.abstract_loader import AbstractLoader
@@ -10,6 +11,7 @@ from src.data.storage.abstract_storage import AbstractStorage
 from src.helpers.general import get_logger
 
 
+@inject
 class Ingester:
     """
     The ingester class is used to ingest data from a data source into a storage.
@@ -24,10 +26,12 @@ class Ingester:
     storage: AbstractStorage
     logger: Logger
 
-    def __init__(self, data_loader: AbstractLoader, storage: AbstractStorage):
+    def __init__(
+        self, data_loader: AbstractLoader, storage: AbstractStorage, logger: Logger
+    ):
         self.data_loader = data_loader
         self.storage = storage
-        self.logger = get_logger("Ingester")
+        self.logger = logger
 
     def ingest(self, tables: List[SourceTable]):
         """

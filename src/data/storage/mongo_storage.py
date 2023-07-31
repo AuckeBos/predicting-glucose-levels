@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from typing import List
 
+from kink import inject
 from pymongo import MongoClient
 from pymongo.collection import Collection
 from pymongo.database import Database
@@ -21,11 +22,14 @@ class MongoStorage(AbstractStorage):
     client: MongoClient
     db: Database
 
+    # Todo: Injection of database not working
+    @inject
     def __init__(self, client: MongoClient, database: str):
         """
         Initialize the MongoStorage class.
         Read credentials from env.
         """
+        print(database)
         self.client = client
         self.db = self.client[database]
 

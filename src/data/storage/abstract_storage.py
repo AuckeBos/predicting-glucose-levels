@@ -47,7 +47,7 @@ class AbstractStorage(ABC):
         """
         Add updated_at, and then call _upsert.
         """
-        updated_at = now()
+        updated_at = now().isoformat()
         data = map(lambda x: {**x, "updated_at": updated_at}, data)
         self._upsert(data, table, key_col, timestamp_col)
 
@@ -55,7 +55,7 @@ class AbstractStorage(ABC):
         """
         Add inserted_at, and then call _insert.
         """
-        inserted_at = now()
+        inserted_at = now().isoformat()
         data = map(lambda x: {**x, "inserted_at": inserted_at}, data)
         self._insert(data, table)
 
@@ -80,7 +80,7 @@ class AbstractStorage(ABC):
         """
         Set the last timestamp in the runmoments table. Use the upsert method.
         """
-        data = [{"source": source, "timestamp": timestamp}]
+        data = [{"source": source, "timestamp": timestamp.isoformat()}]
         self.upsert(data, "runmoments", "source", "timestamp")
 
     def get_window(self, source: str) -> Tuple[datetime, datetime]:
