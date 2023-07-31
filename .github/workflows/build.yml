@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Setup Python
-        uses: .github/workflows/setup-python.yml
+        uses: ./.github/workflows/setup-python.yml
       - name: Run black
         run: black --check --verbose .
       - name: Run isort
@@ -14,6 +14,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Setup Python
-        uses: .github/workflows/setup-python.yml    
+        uses: ./.github/workflows/setup-python.yml    
       - name: Run pytest
         run: pytest
