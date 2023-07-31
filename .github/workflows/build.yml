@@ -4,10 +4,8 @@ jobs:
   lint:
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2    
       - name: Setup Python
-        uses: ./../.github/workflows/setup-python.yml
+        uses: ./.github/workflows/setup-python.yml
       - name: Run black
         run: black --check --verbose .
       - name: Run isort
@@ -15,9 +13,7 @@ jobs:
   test:
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2    
       - name: Setup Python
-        uses: ./../.github/workflows/setup-python.yml    
+        uses: ./.github/workflows/setup-python.yml
       - name: Run pytest
         run: pytest
