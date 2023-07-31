@@ -11,11 +11,11 @@ jobs:
         python-version: '3.9'
         cache: 'poetry'    
     # Need llvm for package
-    - run: |
-        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 15CF4D18AF4F7421
-        sudo add-apt-repository 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main'
-        sudo apt-get update
-        sudo apt-get install llvm-10
+    # - run: |
+    #     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 15CF4D18AF4F7421
+    #     sudo add-apt-repository 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main'
+    #     sudo apt-get update
+    #     sudo apt-get install llvm-10
     - run: poetry install
     - run: poetry run black --check --verbose .
     - run: poetry run isort --check .
