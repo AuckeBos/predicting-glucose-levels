@@ -2,6 +2,7 @@ from datetime import datetime
 
 import mongomock
 import pytest
+
 from src.data.storage.mongo_storage import MongoStorage
 
 

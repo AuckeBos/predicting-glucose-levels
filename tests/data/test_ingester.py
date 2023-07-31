@@ -1,6 +1,7 @@
 from unittest.mock import Mock
 
 import pytest
+
 from src.data.ingestion.ingester import Ingester
 from src.data.ingestion.loader.abstract_loader import AbstractLoader
 from src.data.ingestion.source_table import SourceTable

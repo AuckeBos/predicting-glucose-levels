@@ -5,6 +5,7 @@ from typing import List
 from pymongo import MongoClient
 from pymongo.collection import Collection
 from pymongo.database import Database
+
 from src.data.storage.abstract_storage import AbstractStorage
 
 
