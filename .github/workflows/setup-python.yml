@@ -1,6 +1,6 @@
-name: Job template
 on: 
   workflow_call:
+name: Job template
 defaults:
   run:
     shell: bash
