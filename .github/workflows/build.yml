@@ -5,6 +5,7 @@ jobs:
     needs: ./.github/workflows/setup-python.yml
     runs-on: ubuntu-20.04
     steps:
+      - uses: ./.github/workflows/setup-python.yml
       - uses: actions/checkout@v2
       - name: Run black
         run: black --check --verbose .
@@ -13,6 +14,7 @@ jobs:
   test:
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/checkout@v2
       - name: Setup Python
         uses: ./.github/workflows/setup-python.yml
       - name: Run pytest
