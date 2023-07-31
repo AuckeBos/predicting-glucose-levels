@@ -2,7 +2,7 @@ import json
 import os
 
 import click
-from mongomock import MongoClient
+from pymongo import MongoClient
 from src.data.ingestion.ingester import Ingester
 from src.data.ingestion.loader.nightscout_loader import NightscoutLoader
 from src.data.ingestion.source_table import SourceTable
@@ -28,7 +28,6 @@ def ingest():
         username=os.getenv("MONGO_USER"),
         password=os.getenv("MONGO_PASSWORD"),
     )
-    # todo: fix: timestamp of runomment not loaded
     storage = MongoStorage(client, db)
     ingester = Ingester(loader, storage)
     source_tables = PROJECT_DIR / "config" / "source_tables.json"
