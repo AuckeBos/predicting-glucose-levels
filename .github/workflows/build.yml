@@ -4,11 +4,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
       with:
         python-version: '3.9'
-        cache: 'poetry'    
-    - uses: actions/checkout@v3
+        cache: 'poetry'        
     - name: Install poetry
       run: pipx install poetry
     # Need llvm for package
