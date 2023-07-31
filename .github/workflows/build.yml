@@ -5,12 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - run: pipx install poetry
     - uses: actions/setup-python@v4
       with:
         python-version: '3.9'
-        cache: 'poetry'        
-    - name: Install poetry
-      run: pipx install poetry
+        cache: 'poetry'    
     # Need llvm for package
     - run: |
         SUDO add-apt-repository 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main'
