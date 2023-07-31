@@ -2,17 +2,18 @@ name: build
 on: [pull_request]
 jobs:
   lint:
-    uses: ./.github/workflows/setup-python.yml
     runs-on: ubuntu-20.04
     steps:
-      
+      - name: Setup Python
+        uses: .github/workflows/setup-python.yml
       - name: Run black
         run: black --check --verbose .
       - name: Run isort
         run: isort --check .
   test:
-    uses: ./.github/workflows/setup-python.yml
     runs-on: ubuntu-20.04
     steps:
+      - name: Setup Python
+        uses: .github/workflows/setup-python.yml    
       - name: Run pytest
         run: pytest
