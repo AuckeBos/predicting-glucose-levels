@@ -10,11 +10,8 @@ jobs:
       with:
         python-version: '3.9'
         cache: 'poetry'
-    - name: Install LLVM and Clang
-      uses: KyleMayes/install-llvm-action@v1
-      with:
-        version: "10.0"        
-    - run: poetry install
-    - run: poetry run black --check --verbose .
-    - run: poetry run isort --check .
-    - run: poetry run pytest
+    - run: poetry export --without-hashes --format=requirements.txt > requirements.txt
+    - run: pip install -r requirements.txt
+    - run: black --check --verbose .
+    - run: isort --check .
+    - run: pytest
