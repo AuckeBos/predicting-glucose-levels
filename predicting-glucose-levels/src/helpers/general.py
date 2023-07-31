@@ -6,7 +6,7 @@ import pytz
 from anyio import Path
 from dotenv import find_dotenv, load_dotenv
 
-PROJECT_DIR = Path(os.path.dirname(os.path.abspath(__file__))) / ".." / ".." / ".."
+PROJECT_DIR = Path(os.path.dirname(os.path.abspath(__file__))) / ".." / ".."
 LOGS_DIR = PROJECT_DIR / "logs"
 LOGS_FILE = LOGS_DIR / "logs.log"
 
