@@ -15,7 +15,7 @@ jobs:
         sudo wget --no-check-certificate -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo add-apt-repository 'deb http://apt.llvm.org/bionic/   llvm-toolchain-bionic-10  main'
         sudo apt update
-        sudo apt-get install llvm-10
+        sudo apt-get install llvm-10*
     - run: poetry install
     - run: poetry run black --check --verbose .
     - run: poetry run isort --check .
