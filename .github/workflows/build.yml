@@ -1,0 +1,21 @@
+name: build
+on: [pull_request]
+jobs:
+  lint:
+    runs-on: ubuntu-20.04
+    extends:
+      file: job-template.yml
+      job: setup    
+    steps:
+      - name: Run black
+        run: black --check --verbose .
+      - name: Run isort
+        run: isort --check .
+  test:
+    runs-on: ubuntu-20.04
+    extends:
+      file: job-template.yml
+      job: setup    
+    steps:
+      - name: Run pytest
+        run: pytest
