@@ -1,21 +1,17 @@
 name: build
-on: [pull_request]
+on: [pull_request, workflow_dispatch]
 jobs:
-  lint:
-    needs: ./.github/workflows/setup-python.yml
-    runs-on: ubuntu-20.04
+  build:
+    runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/setup-python.yml
-      - uses: actions/checkout@v2
-      - name: Run black
-        run: black --check --verbose .
-      - name: Run isort
-        run: isort --check .
-  test:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup Python
-        uses: ./.github/workflows/setup-python.yml
-      - name: Run pytest
-        run: pytest
+    - uses: actions/checkout@v3
+    - name: Install poetry
+      run: pipx install poetry
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'poetry'
+    - run: poetry install
+    - run: black --check --verbose .
+    - run: isort --check .
+    - run: poetry run pytest      
