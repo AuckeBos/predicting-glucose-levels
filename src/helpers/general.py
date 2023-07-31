@@ -1,9 +1,9 @@
 import logging
 import os
 from datetime import datetime
+from pathlib import Path
 
 import pytz
-from anyio import Path
 from dotenv import find_dotenv, load_dotenv
 
 PROJECT_DIR = Path(os.path.dirname(os.path.abspath(__file__))) / ".." / ".."
