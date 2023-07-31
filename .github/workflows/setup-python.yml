@@ -4,6 +4,7 @@ defaults:
     shell: bash
 runs-on: ubuntu-20.04
 runs:
+  using: "composite"
   steps:
     - name: Setup Python
       uses: actions/setup-python@v1
