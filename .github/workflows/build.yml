@@ -12,6 +12,7 @@ jobs:
         cache: 'poetry'    
     # Need llvm for package
     - run: |
+        sudo add-apt-repository 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main'
         sudo apt-get update
         sudo apt-get install llvm-10
     - run: poetry install
