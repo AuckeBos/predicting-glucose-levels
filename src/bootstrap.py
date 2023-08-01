@@ -1,7 +1,5 @@
 import logging
 import os
-from datetime import datetime
-from pathlib import Path
 
 from dotenv import find_dotenv, load_dotenv
 from kink import di

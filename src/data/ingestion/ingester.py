@@ -1,14 +1,11 @@
-import os
 from logging import Logger
 from typing import List
 
 from kink import inject
-from pymongo import MongoClient
 
 from src.data.ingestion.loader.abstract_loader import AbstractLoader
 from src.data.ingestion.source_table import SourceTable
 from src.data.storage.abstract_storage import AbstractStorage
-from src.helpers.general import get_logger
 
 
 @inject

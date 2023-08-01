@@ -1,14 +1,10 @@
+import datetime
 import json
-import os
 
 import click
-from jsonschema import validate
-from pymongo import MongoClient
 
 from src.data.ingestion.ingester import Ingester
-from src.data.ingestion.loader.nightscout_loader import NightscoutLoader
 from src.data.ingestion.source_table import SourceTable
-from src.data.storage.mongo_storage import MongoStorage
 from src.helpers.general import PROJECT_DIR
 
 

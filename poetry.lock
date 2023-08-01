@@ -44,6 +44,18 @@ tests-no-zope = ["hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist", "c
 tests_no_zope = ["hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist", "cloudpickle", "mypy (>=0.971,<0.990)", "pytest-mypy-plugins"]
 
 [[package]]
+name = "autoflake"
+version = "2.2.0"
+description = "Removes unused imports and unused variables"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+pyflakes = ">=3.0.0"
+tomli = {version = ">=2.0.1", markers = "python_version < \"3.11\""}
+
+[[package]]
 name = "autopep8"
 version = "2.0.2"
 description = "A tool that automatically formats Python code to conform to the PEP 8 style guide"
@@ -861,6 +873,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "pyflakes"
+version = "3.1.0"
+description = "passive checker of Python programs"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
 name = "pyjwt"
 version = "2.6.0"
 description = "JSON Web Token implementation in Python"
@@ -1335,12 +1355,13 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "da84d201d02f5ba39a89b45b290168418c7621b9932ad0fb4a2abfaebe22ee78"
+content-hash = "448df5bcfe3f1af5884be04b0843eb4d83d97070cfd69d18f79b2df2ecc66f56"
 
 [metadata.files]
 alembic = []
 arrow = []
 attrs = []
+autoflake = []
 autopep8 = []
 binaryornot = []
 black = []
@@ -1423,6 +1444,7 @@ pre-commit = []
 protobuf = []
 pyarrow = []
 pycodestyle = []
+pyflakes = []
 pyjwt = []
 pymongo = []
 pyparsing = [

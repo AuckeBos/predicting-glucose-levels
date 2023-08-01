@@ -1,9 +1,6 @@
-from dataclasses import dataclass
-from datetime import datetime
 from typing import List
 
 from kink import inject
-from pymongo.collection import Collection
 from pymongo.database import Database
 
 from src.data.storage.abstract_storage import AbstractStorage
