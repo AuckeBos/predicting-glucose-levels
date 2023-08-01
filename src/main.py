@@ -1,4 +1,3 @@
-import datetime
 import json
 
 import click
@@ -23,10 +22,13 @@ def ingest():
 
 @cli.command()
 def transform():
-    pass
+    schemas = {
+        schema.stem: json.load(open(schema))
+        for schema in (PROJECT_DIR / "config" / "schemas").glob("*.json")
+    }
 
 
 if __name__ == "__main__":
-    ingest()
-    # transform()
+    # ingest()
+    transform()
     # cli()

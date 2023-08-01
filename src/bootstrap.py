@@ -6,6 +6,7 @@ from kink import di
 from pymongo import MongoClient
 from pymongo.database import Database
 
+from src.data.ingestion.ingester import Ingester
 from src.data.ingestion.loader.abstract_loader import AbstractLoader
 from src.data.ingestion.loader.nightscout_loader import NightscoutLoader
 from src.data.storage.abstract_storage import AbstractStorage
@@ -50,6 +51,7 @@ def bootstrap_di():
     di["nightscout_uri"] = os.getenv("NIGHTSCOUT_URI")
     di["nightscout_secret"] = os.getenv("NIGHTSCOUT_SECRET")
     # Ingestion
-    di[AbstractLoader] = NightscoutLoader()
+    di[AbstractLoader] = lambda _di: NightscoutLoader()
+    di[Ingester] = lambda _di: Ingester()
     # Storage
-    di[AbstractStorage] = MongoStorage()
+    di[AbstractStorage] = lambda _di: MongoStorage()

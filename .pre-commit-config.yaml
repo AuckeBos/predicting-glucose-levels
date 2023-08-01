@@ -8,8 +8,4 @@ repos:
   hooks:
     - id: isort
       name: isort (python)
-- repo: https://github.com/myint/autoflake
-  rev: v2.2.0
-  hooks:
-    - id: autoflake
-      args: [--remove-all-unused-imports]
+      args: ["--profile", "black"]
