@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List, Optional, Tuple
 
+import pandas as pd
+
 from src.helpers.general import now
 
 
@@ -29,8 +31,15 @@ class AbstractStorage(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def _overwrite(self, data: pd.DataFrame, table: str) -> None:
+        """
+        Overwrite the full contents of a table with the data.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
     def find(
-        self, table: str, query: dict, sort: List[str] = None, asc: bool = True
+        self, table: str, query: dict = None, sort: List[str] = None, asc: bool = True
     ) -> List:
         """
         Find rows in a table that match the query.
@@ -42,6 +51,24 @@ class AbstractStorage(ABC):
             asc: Whether to sort ascending or descending.
         """
         raise NotImplementedError
+
+    def get(self, table: str, as_dataframe: bool = False) -> List:
+        """
+        Get all rows in a table.
+
+        Parameters:
+            table: The name of the table to query.
+        """
+        result = self.find(table)
+        if as_dataframe:
+            result = pd.DataFrame(result)
+        return result
+
+    def overwrite(self, data: pd.DataFrame, table: str) -> None:
+        """
+        Overwrite the full contents of a table with a dataframe.
+        """
+        self._overwrite(data, table)
 
     def upsert(self, data: List, table: str, key_col: str, timestamp_col: str) -> None:
         """

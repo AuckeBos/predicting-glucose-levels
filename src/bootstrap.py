@@ -1,5 +1,7 @@
+import json
 import logging
 import os
+from pathlib import Path
 
 from dotenv import find_dotenv, load_dotenv
 from kink import di
@@ -11,14 +13,14 @@ from src.data.ingestion.loader.abstract_loader import AbstractLoader
 from src.data.ingestion.loader.nightscout_loader import NightscoutLoader
 from src.data.storage.abstract_storage import AbstractStorage
 from src.data.storage.mongo_storage import MongoStorage
-from src.helpers.general import LOGS_DIR, LOGS_FILE
+from src.helpers.config import LOGS_DIR, LOGS_FILE, PROJECT_DIR
 
 
-def load_env():
+def _load_env():
     load_dotenv(find_dotenv())
 
 
-def get_logger(name: str):
+def _get_logger(name: str):
     """
     Get a logger with a file handler.
     """
@@ -37,7 +39,7 @@ def bootstrap_di():
     """
     Inject dependencies into the dependency injection container.
     """
-    load_env()
+    _load_env()
     # Mongo
     di[MongoClient] = lambda _di: MongoClient(
         os.getenv("MONGO_URI"),
@@ -46,7 +48,7 @@ def bootstrap_di():
     )
     di[Database] = lambda _di: _di[MongoClient][os.getenv("MONGO_DB")]
     # Logging
-    di[logging.Logger] = get_logger("logger")
+    di[logging.Logger] = _get_logger("logger")
     # Nightscout
     di["nightscout_uri"] = os.getenv("NIGHTSCOUT_URI")
     di["nightscout_secret"] = os.getenv("NIGHTSCOUT_SECRET")
@@ -55,3 +57,8 @@ def bootstrap_di():
     di[Ingester] = lambda _di: Ingester()
     # Storage
     di[AbstractStorage] = lambda _di: MongoStorage()
+    # Schemas
+    di["schemas"] = {
+        schema.stem: json.load(open(schema))
+        for schema in (PROJECT_DIR / "config" / "schemas").glob("*.json")
+    }

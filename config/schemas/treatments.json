@@ -1,76 +1,79 @@
 {
-    "type": "object",
-    "properties": {
-        "_id": {
-            "type": "string"
-        },
-        "carbs": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "created_at": {
-            "type": "string",
-            "properties": {
-                "datetime": {
-                    "type": "string",
-                    "format": "date-time"
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "_id": {
+                "type": "string"
+            },
+            "carbs": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "created_at": {
+                "type": "string",
+                "properties": {
+                    "datetime": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
                 }
+            },
+            "enteredBy": {
+                "type": "string"
+            },
+            "eventType": {
+                "type": "string"
+            },
+            "insulin": {
+                "type": "integer"
+            },
+            "insulinInjections": {
+                "type": "string"
+            },
+            "sysTime": {
+                "type": "string",
+                "properties": {
+                    "datetime": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "timestamp": {
+                "type": "integer"
+            },
+            "updated_at": {
+                "type": "string",
+                "properties": {
+                    "datetime": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "utcOffset": {
+                "type": "integer"
+            },
+            "uuid": {
+                "type": "string"
             }
         },
-        "enteredBy": {
-            "type": "string"
-        },
-        "eventType": {
-            "type": "string"
-        },
-        "insulin": {
-            "type": "integer"
-        },
-        "insulinInjections": {
-            "type": "string"
-        },
-        "sysTime": {
-            "type": "string",
-            "properties": {
-                "datetime": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
-        },
-        "timestamp": {
-            "type": "integer"
-        },
-        "updated_at": {
-            "type": "string",
-            "properties": {
-                "datetime": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
-        },
-        "utcOffset": {
-            "type": "integer"
-        },
-        "uuid": {
-            "type": "string"
-        }
-    },
-    "required": [
-        "_id",
-        "carbs",
-        "created_at",
-        "enteredBy",
-        "eventType",
-        "insulin",
-        "insulinInjections",
-        "sysTime",
-        "timestamp",
-        "updated_at",
-        "utcOffset",
-        "uuid"
-    ]
+        "required": [
+            "_id",
+            "carbs",
+            "created_at",
+            "enteredBy",
+            "eventType",
+            "insulin",
+            "insulinInjections",
+            "sysTime",
+            "timestamp",
+            "updated_at",
+            "utcOffset",
+            "uuid"
+        ]
+    }
 }

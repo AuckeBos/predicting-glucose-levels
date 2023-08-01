@@ -1,6 +1,8 @@
 from typing import List
 
+import pandas as pd
 from kink import inject
+from pymongo import MongoClient
 from pymongo.database import Database
 
 from src.data.storage.abstract_storage import AbstractStorage
@@ -12,23 +14,28 @@ class MongoStorage(AbstractStorage):
     The MongoStorage class is used to store data in a MongoDB database.
 
     Attributes:
+        client: The MongoDB client.
         database: The MongoDB database.
     """
 
+    client: MongoClient
     database: Database
 
-    def __init__(self, database: Database):
+    def __init__(self, client: MongoClient, database: Database):
         """
         Create a connection to the MongoDB database.
         """
+        self.client = client
         self.database = database
 
     def find(
-        self, table: str, query: dict, sort: List[str] = None, asc: bool = True
+        self, table: str, query: dict = None, sort: List[str] = None, asc: bool = True
     ) -> List:
         """
         Find rows in a table that match the query. A query is a dictionary of key-equals-value pairs.
         """
+        query = query or {}
+        sort = sort or []
         query = {key: {"$eq": value} for key, value in query.items()}
         sort = [(key, 1 if asc else -1) for key in sort]
         result = self.database[table].find(query)
@@ -53,3 +60,12 @@ class MongoStorage(AbstractStorage):
         if data:
             table = self.database[table]
             table.insert_many(data)
+
+    def _overwrite(self, data: pd.DataFrame, table: str) -> None:
+        """
+        Overwrite the full contents of a table with the data.
+        """
+        with self.client.start_session() as session:
+            with session.start_transaction():
+                self.database[table].drop()
+                self._insert(data.to_dict("records"), table)

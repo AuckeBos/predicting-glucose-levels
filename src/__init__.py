@@ -1,3 +1,3 @@
-from bootstrap import bootstrap_di
+from src.bootstrap import bootstrap_di
 
 bootstrap_di()

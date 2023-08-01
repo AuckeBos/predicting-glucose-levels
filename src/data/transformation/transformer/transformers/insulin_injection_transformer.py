@@ -4,7 +4,7 @@ from src.data.transformation.transformer.transformers.abstract_transformer impor
 
 
 class InsulinInjectionTransformer(AbstractTransformer):
-    def validate_schema(self):
+    def validate_schemas(self):
         pass
 
     def extract(self):
