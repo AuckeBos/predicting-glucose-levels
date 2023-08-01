@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/psf/black
-  rev: stable
+  rev: 23.7.0
   hooks:
     - id: black
 - repo: https://github.com/pycqa/isort
@@ -12,4 +12,4 @@ repos:
   rev: v2.2.0
   hooks:
     - id: autoflake
-      args: [--remove-all-unused-imports, --recursive]
+      args: [--remove-all-unused-imports]
