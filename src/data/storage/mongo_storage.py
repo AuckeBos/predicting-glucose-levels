@@ -1,37 +1,30 @@
-import os
+from dataclasses import dataclass
 from datetime import datetime
 from typing import List
 
 from kink import inject
-from pymongo import MongoClient
 from pymongo.collection import Collection
 from pymongo.database import Database
 
 from src.data.storage.abstract_storage import AbstractStorage
 
 
+@inject
 class MongoStorage(AbstractStorage):
     """
     The MongoStorage class is used to store data in a MongoDB database.
 
     Attributes:
-        client: The MongoDB client.
-        db: The MongoDB database.
+        database: The MongoDB database.
     """
 
-    client: MongoClient
-    db: Database
+    database: Database
 
-    # Todo: Injection of database not working
-    @inject
-    def __init__(self, client: MongoClient, database: str):
+    def __init__(self, database: Database):
         """
-        Initialize the MongoStorage class.
-        Read credentials from env.
+        Create a connection to the MongoDB database.
         """
-        print(database)
-        self.client = client
-        self.db = self.client[database]
+        self.database = database
 
     def find(
         self, table: str, query: dict, sort: List[str] = None, asc: bool = True
@@ -41,7 +34,7 @@ class MongoStorage(AbstractStorage):
         """
         query = {key: {"$eq": value} for key, value in query.items()}
         sort = [(key, 1 if asc else -1) for key in sort]
-        result = self.db[table].find(query)
+        result = self.database[table].find(query)
         if sort:
             result = result.sort(sort)
         return list(result)
@@ -51,7 +44,7 @@ class MongoStorage(AbstractStorage):
         Upsert each item. For now, simply loop over them and insert each one separately.
         Also add an updated_at column.
         """
-        table = self.db[table]
+        table = self.database[table]
         for row in data:
             table.update_one({key_col: row[key_col]}, {"$set": row}, upsert=True)
 
@@ -61,5 +54,5 @@ class MongoStorage(AbstractStorage):
         Also add an inserted_at column.
         """
         if data:
-            table = self.db[table]
+            table = self.database[table]
             table.insert_many(data)

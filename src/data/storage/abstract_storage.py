@@ -74,7 +74,11 @@ class AbstractStorage(ABC):
         to load. Return 2022-01-01 if there is no timestamp in the runmoments table.
         """
         result = self.find_one("runmoments", {"source": source})
-        return result["timestamp"] if result else datetime(2022, 1, 1)
+        return (
+            datetime.fromisoformat(result["timestamp"])
+            if result
+            else datetime(2020, 1, 1)
+        )
 
     def set_last_runmoment(self, source: str, timestamp: datetime) -> None:
         """

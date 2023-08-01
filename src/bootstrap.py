@@ -6,7 +6,12 @@ from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 from kink import di
 from pymongo import MongoClient
+from pymongo.database import Database
 
+from src.data.ingestion.loader.abstract_loader import AbstractLoader
+from src.data.ingestion.loader.nightscout_loader import NightscoutLoader
+from src.data.storage.abstract_storage import AbstractStorage
+from src.data.storage.mongo_storage import MongoStorage
 from src.helpers.general import LOGS_DIR, LOGS_FILE
 
 
@@ -15,6 +20,9 @@ def load_env():
 
 
 def get_logger(name: str):
+    """
+    Get a logger with a file handler.
+    """
     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logger = logging.getLogger(name)
     os.makedirs(LOGS_DIR, exist_ok=True)
@@ -27,13 +35,23 @@ def get_logger(name: str):
 
 
 def bootstrap_di():
-    di[MongoClient] = MongoClient(
+    """
+    Inject dependencies into the dependency injection container.
+    """
+    load_env()
+    # Mongo
+    di[MongoClient] = lambda _di: MongoClient(
         os.getenv("MONGO_URI"),
         username=os.getenv("MONGO_USER"),
         password=os.getenv("MONGO_PASSWORD"),
     )
+    di[Database] = lambda _di: _di[MongoClient][os.getenv("MONGO_DB")]
+    # Logging
     di[logging.Logger] = get_logger("logger")
-    di["database"] = os.getenv("MONGO_DB")
+    # Nightscout
     di["nightscout_uri"] = os.getenv("NIGHTSCOUT_URI")
     di["nightscout_secret"] = os.getenv("NIGHTSCOUT_SECRET")
-    print("done injection")
+    # Ingestion
+    di[AbstractLoader] = NightscoutLoader()
+    # Storage
+    di[AbstractStorage] = MongoStorage()

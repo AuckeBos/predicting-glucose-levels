@@ -19,9 +19,7 @@ def cli():
 
 @cli.command()
 def ingest():
-    loader = NightscoutLoader()
-    storage = MongoStorage()
-    ingester = Ingester(loader, storage)
+    ingester = Ingester()
     source_tables = PROJECT_DIR / "config" / "source_tables.json"
     source_tables = [SourceTable(**i) for i in json.load(open(source_tables))]
     ingester.ingest(source_tables)
