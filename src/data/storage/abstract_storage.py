@@ -37,6 +37,8 @@ class AbstractStorage(ABC):
         """
         raise NotImplementedError
 
+    # Todo: Update this function, such that the query is of type 'any'. We want to be able to do complex querying, such that
+    # For the entries, we can filter out all entries of type 'cal'
     @abstractmethod
     def find(
         self, table: str, query: dict = None, sort: List[str] = None, asc: bool = True
