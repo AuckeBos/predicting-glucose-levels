@@ -13,7 +13,7 @@ def mongo():
 
 @pytest.fixture
 def mongo_storage(mongo):
-    return MongoStorage(mongo, "test_database")
+    return MongoStorage(mongo, mongo["test_database"])
 
 
 def test_insert_and_find_one(mongo_storage):
@@ -28,24 +28,27 @@ def test_insert_and_find_one(mongo_storage):
 
     # Act
     mongo_storage.insert(data, table_name)
-    result = mongo_storage.find_one(table_name, {"key": 2})
+    result = mongo_storage.find_one(table_name, [("key", "eq", 2)])
 
     # Assert
     assert result["key"] == 2
-    assert result["inserted_at"] > current_time
+    assert (
+        datetime.fromisoformat(result["inserted_at"]).replace(tzinfo=None)
+        > current_time
+    )
 
 
 def test_upsert_and_find(mongo_storage):
     # Arrange
     table_name = "test_table"
     data = [
-        {"key": 1, "value": "one", "class": "test"},
-        {"key": 2, "value": "two", "class": "test"},
+        {"key": 1, "value": "one"},
+        {"key": 2, "value": "two"},
     ]
 
     # Act
     mongo_storage.upsert(data, table_name, "key", "value")
-    result = mongo_storage.find(table_name, {"class": "test"}, ["key"], False)
+    result = mongo_storage.find(table_name, [("key", "in", [1, 2])], ["key"], False)
 
     # Assert
     assert len(result) == 2

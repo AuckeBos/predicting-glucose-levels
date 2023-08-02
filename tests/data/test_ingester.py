@@ -4,7 +4,7 @@ import pytest
 
 from src.data.ingestion.ingester import Ingester
 from src.data.ingestion.loader.abstract_loader import AbstractLoader
-from src.data.ingestion.source_table import SourceTable
+from src.data.source_table import SourceTable
 from src.data.storage.abstract_storage import AbstractStorage
 
 
@@ -35,7 +35,7 @@ def test_ingester_init(mock_data_loader, mock_storage):
 def test_ingest_single_table(ingester, mock_data_loader, mock_storage):
     # Arrange
     table = SourceTable(
-        destination_name="table_1",
+        name="table_1",
         endpoint="endpoint",
         timestamp_col="timestamp",
         key_col="key",
@@ -70,13 +70,13 @@ def test_ingest_single_table(ingester, mock_data_loader, mock_storage):
 def test_ingest_multiple_tables(ingester, mock_data_loader, mock_storage):
     # Arrange
     table1 = SourceTable(
-        destination_name="table_1",
+        name="table_1",
         endpoint="endpoint1",
         timestamp_col="timestamp",
         key_col="key",
     )
     table2 = SourceTable(
-        destination_name="table_2",
+        name="table_2",
         endpoint="endpoint2",
         timestamp_col="timestamp",
         key_col="key",

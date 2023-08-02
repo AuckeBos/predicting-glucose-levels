@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-from pathlib import Path
 
 from dotenv import find_dotenv, load_dotenv
 from kink import di
@@ -11,8 +10,10 @@ from pymongo.database import Database
 from src.data.ingestion.ingester import Ingester
 from src.data.ingestion.loader.abstract_loader import AbstractLoader
 from src.data.ingestion.loader.nightscout_loader import NightscoutLoader
+from src.data.metadata import Metadata
 from src.data.storage.abstract_storage import AbstractStorage
 from src.data.storage.mongo_storage import MongoStorage
+from src.data.table_metadata import TableMetadata
 from src.helpers.config import LOGS_DIR, LOGS_FILE, PROJECT_DIR
 
 
@@ -57,8 +58,4 @@ def bootstrap_di():
     di[Ingester] = lambda _di: Ingester()
     # Storage
     di[AbstractStorage] = lambda _di: MongoStorage()
-    # Schemas
-    di["schemas"] = {
-        schema.stem: json.load(open(schema))
-        for schema in (PROJECT_DIR / "config" / "schemas").glob("*.json")
-    }
+    di[Metadata]: list = Metadata()

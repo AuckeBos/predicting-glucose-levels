@@ -1,19 +1,28 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import List, Optional, Tuple
+from logging import Logger
+from typing import Any, List, Optional, Tuple
 
 import pandas as pd
+from kink import inject
 
+from src.data.metadata import Metadata
+from src.data.table_metadata import TableMetadata
 from src.helpers.general import now
 
 
+@inject
 class AbstractStorage(ABC):
     """
     AbstractStorage is an abstract class that defines the interface for a storage class.
     """
 
-    def __init__(self) -> None:
-        raise NotImplementedError
+    metadata: Metadata
+    logger: Logger
+
+    def __init__(self, metadata: Metadata, logger: Logger) -> None:
+        self.metadata = metadata
+        self.logger = logger
 
     @abstractmethod
     def _upsert(self, data: List, table: str, key_col: str, timestamp_col: str) -> None:
@@ -37,18 +46,29 @@ class AbstractStorage(ABC):
         """
         raise NotImplementedError
 
-    # Todo: Update this function, such that the query is of type 'any'. We want to be able to do complex querying, such that
-    # For the entries, we can filter out all entries of type 'cal'
+    @abstractmethod
+    def convert_query(self, query: List[Tuple] = None) -> Any:
+        """
+        Convert a query to the appropriate format for the storage class.
+        """
+        raise NotImplementedError
+
     @abstractmethod
     def find(
-        self, table: str, query: dict = None, sort: List[str] = None, asc: bool = True
+        self,
+        table: str,
+        query: List[Tuple] = None,
+        sort: List[str] = None,
+        asc: bool = True,
     ) -> List:
         """
         Find rows in a table that match the query.
 
         Parameters:
             table: The name of the table to query.
-            query: A dictionary of key=value pairs.
+            query: A list of queries. Each query is a tuple of (column, operator, value). The operator is one of the
+                following: eq, gt, gte, in, lt, lte, ne, nin. Implementations should convert this to the
+                appropriate query.
             sort: A list of columns to sort by.
             asc: Whether to sort ascending or descending.
         """
@@ -72,13 +92,14 @@ class AbstractStorage(ABC):
         """
         self._overwrite(data, table)
 
-    def upsert(self, data: List, table: str, key_col: str, timestamp_col: str) -> None:
+    def upsert(self, data: List, table_name: str) -> None:
         """
         Add updated_at, and then call _upsert.
         """
         updated_at = now().isoformat()
         data = map(lambda x: {**x, "updated_at": updated_at}, data)
-        self._upsert(data, table, key_col, timestamp_col)
+        table = self.metadata.get_table(table_name)
+        self._upsert(data, table_name, table.key_col, table.timestamp_col)
 
     def insert(self, data: List, table: str) -> None:
         """
@@ -102,7 +123,7 @@ class AbstractStorage(ABC):
         Get the last timestamp from the runmoments table. This is used to determine the window of data
         to load. Return 2022-01-01 if there is no timestamp in the runmoments table.
         """
-        result = self.find_one("runmoments", {"source": source})
+        result = self.find_one("runmoments", [("source", "eq", source)])
         return (
             datetime.fromisoformat(result["timestamp"])
             if result
@@ -114,7 +135,8 @@ class AbstractStorage(ABC):
         Set the last timestamp in the runmoments table. Use the upsert method.
         """
         data = [{"source": source, "timestamp": timestamp.isoformat()}]
-        self.upsert(data, "runmoments", "source", "timestamp")
+        self.upsert(data, "runmoments")
+        self.logger.info(f"Updated runmoment of {source} to {timestamp}")
 
     def get_window(self, source: str) -> Tuple[datetime, datetime]:
         """
@@ -123,4 +145,5 @@ class AbstractStorage(ABC):
         """
         start = self.get_last_runmoment(source)
         end = datetime.now()
+        self.logger.info(f"Retrieved window for {source} as {start} - {end}")
         return start, end

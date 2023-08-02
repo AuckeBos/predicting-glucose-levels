@@ -1,9 +1,11 @@
 import json
+from typing import List
 
 import click
+from kink import di, inject
 
 from src.data.ingestion.ingester import Ingester
-from src.data.ingestion.source_table import SourceTable
+from src.data.metadata import Metadata
 from src.data.transformation.transformer.transformers.glucose_measurements_transformer import (
     GlucoseMeasurementTransformer,
 )
@@ -16,13 +18,11 @@ def cli():
 
 
 @cli.command()
-def ingest():
+@inject
+def ingest(metadata: Metadata):
     ingester = Ingester()
-    source_tables = PROJECT_DIR / "config" / "source_tables.json"
-    source_tables = [
-        SourceTable(**dct) for dct in json.load(open(source_tables)).values()
-    ]
-    ingester.ingest(source_tables)
+    tables = [t for t in metadata.tables if t.type == "source_table"]
+    ingester.ingest(tables)
 
 
 @cli.command()
@@ -35,4 +35,3 @@ def transform():
 if __name__ == "__main__":
     # ingest()
     transform()
-    # cli()

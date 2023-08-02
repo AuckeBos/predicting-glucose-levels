@@ -3,6 +3,8 @@ from typing import Dict
 import jsonschema
 from kink import inject
 
+from src.data.metadata import Metadata
+
 
 @inject
 class SchemaValidator:
@@ -10,10 +12,10 @@ class SchemaValidator:
     Implements a validate() function, that consumes a JSON document and validates it against a JSON schema.
     """
 
-    schemas: Dict[str, dict]
+    metadata: Metadata
 
-    def __init__(self, schemas: Dict[str, dict]):
-        self.schemas = schemas
+    def __init__(self, metadata: Metadata) -> None:
+        self.metadata = metadata
 
     def validate(self, table_name: str, data: dict) -> None:
         """
@@ -24,6 +26,5 @@ class SchemaValidator:
             data (dict): The JSON document to validate.
 
         """
-        if table_name not in self.schemas:
-            raise ValueError(f"Table {table_name} not found in schemas.")
-        jsonschema.validate(data, self.schemas[table_name])
+        schema = self.metadata.get_table(table_name).schema
+        jsonschema.validate(data, schema)

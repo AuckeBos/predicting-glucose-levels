@@ -1,12 +1,14 @@
 import json
 from abc import ABC, abstractmethod
 from logging import Logger
+from typing import List
 
 from kink import inject
 
 from src.data.ingestion.ingester import Ingester
-from src.data.ingestion.source_table import SourceTable
+from src.data.metadata import Metadata
 from src.data.storage.abstract_storage import AbstractStorage
+from src.data.table_metadata import TableMetadata
 from src.data.transformation.transformer.validators.schema_validator import (
     SchemaValidator,
 )
@@ -22,6 +24,9 @@ class AbstractTransformer(ABC):
 
     schema_validator: SchemaValidator
     ingester: Ingester
+    storage: AbstractStorage
+    logger: Logger
+    metadata: Metadata
 
     def __init__(
         self,
@@ -29,11 +34,13 @@ class AbstractTransformer(ABC):
         ingester: Ingester,
         schema_validator: SchemaValidator,
         logger: Logger,
+        metadata: Metadata,
     ):
         self.storage = storage
         self.schema_validator = schema_validator
         self.ingester = ingester
         self.logger = logger
+        self.metadata = metadata
 
     @abstractmethod
     def extract(self):
@@ -64,19 +71,6 @@ class AbstractTransformer(ABC):
         Loads the transformed data into the destination tables.
         """
         raise NotImplementedError
-
-    def get_source_table(self, name: str) -> SourceTable:
-        """
-        Gets the source table from the source tables config file.
-
-        Args:
-            name (str): The name of the source table.
-        """
-        source_path = PROJECT_DIR / "config" / "source_tables.json"
-        source_table_dict = json.load(open(source_path))
-        if name not in source_table_dict:
-            raise ValueError(f"Source table {name} not found in source tables.")
-        return SourceTable(**source_table_dict[name])
 
     def etl(self):
         """

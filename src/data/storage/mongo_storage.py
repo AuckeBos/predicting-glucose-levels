@@ -1,4 +1,5 @@
-from typing import List
+from ast import Tuple
+from typing import Any, List
 
 import pandas as pd
 from kink import inject
@@ -25,18 +26,29 @@ class MongoStorage(AbstractStorage):
         """
         Create a connection to the MongoDB database.
         """
+        super().__init__()
         self.client = client
         self.database = database
 
+    def convert_query(self, query: List[Tuple] = None) -> Any:
+        """
+        Each operator is simply prefixed with a $. The list is converted to a dictionary.
+        """
+        query = query or []
+        return {q[0]: {f"${q[1]}": q[2]} for q in query}
+
     def find(
-        self, table: str, query: dict = None, sort: List[str] = None, asc: bool = True
+        self,
+        table: str,
+        query: List[Tuple] = None,
+        sort: List[str] = None,
+        asc: bool = True,
     ) -> List:
         """
         Find rows in a table that match the query. A query is a dictionary of key-equals-value pairs.
         """
-        query = query or {}
         sort = sort or []
-        query = {key: {"$eq": value} for key, value in query.items()}
+        query = self.convert_query(query)
         sort = [(key, 1 if asc else -1) for key in sort]
         result = self.database[table].find(query)
         if sort:

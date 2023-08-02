@@ -4,8 +4,8 @@ from typing import List
 from kink import inject
 
 from src.data.ingestion.loader.abstract_loader import AbstractLoader
-from src.data.ingestion.source_table import SourceTable
 from src.data.storage.abstract_storage import AbstractStorage
+from src.data.table_metadata import TableMetadata
 
 
 @inject
@@ -30,7 +30,7 @@ class Ingester:
         self.storage = storage
         self.logger = logger
 
-    def ingest(self, tables: List[SourceTable]):
+    def ingest(self, tables: List[TableMetadata]):
         """
         Ingest a new batch of data.
         Loop over all tables in the storage, and ingest the data.
@@ -38,21 +38,14 @@ class Ingester:
         """
         self.logger.info(f"Ingesting {len(tables)} tables")
         for table in tables:
-            start, end = self.storage.get_window(table.destination_name)
-            self.logger.debug(
-                f"Ingesting {table.destination_name} from {start} to {end}"
-            )
+            start, end = self.storage.get_window(table.name)
+            self.logger.debug(f"Ingesting {table.name} from {start} to {end}")
             data = self.data_loader.load(
                 start, end, table.endpoint, table.timestamp_col
             )
-            self.storage.upsert(
-                data, table.destination_name, table.key_col, table.timestamp_col
+            self.storage.upsert(data, table.name)
+            self.logger.debug(
+                f"Ingested {len(data)} rows for {table.name} during window {start} to {end}"
             )
-            self.logger.info(
-                f"Ingested {len(data)} rows for {table.destination_name} during window {start} to {end}"
-            )
-            self.storage.set_last_runmoment(table.destination_name, end)
-            self.logger.info(
-                f"Updated end timestamp for {table.destination_name} to {end}"
-            )
+            self.storage.set_last_runmoment(table.name, end)
         self.logger.debug("Done ingesting")
