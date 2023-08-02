@@ -1,6 +1,3 @@
-import json
-from typing import List
-
 import click
 from kink import di, inject
 

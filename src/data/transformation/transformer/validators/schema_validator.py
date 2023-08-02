@@ -1,5 +1,3 @@
-from typing import Dict
-
 import jsonschema
 from kink import inject
 

@@ -1,7 +1,5 @@
-import json
 from abc import ABC, abstractmethod
 from logging import Logger
-from typing import List
 
 from kink import inject
 
