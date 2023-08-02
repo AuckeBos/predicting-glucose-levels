@@ -59,6 +59,8 @@ class MongoStorage(AbstractStorage):
         """
         Upsert each item. For now, simply loop over them and insert each one separately.
         Also add an updated_at column.
+
+        Todo: Speed up
         """
         table = self.database[table]
         for row in data:

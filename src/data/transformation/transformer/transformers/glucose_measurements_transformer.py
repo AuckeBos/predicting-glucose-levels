@@ -44,24 +44,27 @@ class GlucoseMeasurementTransformer(AbstractTransformer):
         df = pd.DataFrame(self.source)
         if df.empty:
             self.logger.info("No new entries found.")
-            self.result = []
+            self.result = None
             return
         cols = {
             "glucose_measurement_id": df["_id"].astype(str),
             "glucose_measurement_time": pd.to_datetime(df["dateString"]),
             "delta": df["delta"].astype(float),
             "direction": df["direction"].astype(str),
-            "glucose_value_mg_dl": df["sgv"].fillna(df["mbg"]).astype(float),
-            "glucose_value_mmol_l": df["sgv"].fillna(df["mbg"]).astype(float) / 18.0182,
+            "glucose_value_mg_dl": df["sgv"]
+            .fillna(df.get("mbg", pd.Series()))
+            .astype(float),
             "type": df["type"].astype(str),
             "updated_at": pd.to_datetime(datetime.now()),
         }
         # Select relevant cols, and cast and alias each
-        self.result = df.assign(**cols)[cols.keys()]
+        df = df.assign(**cols)[cols.keys()]
+        df[["glucose_value_mmol_l"]] = df[["glucose_value_mg_dl"]] / 18.0182
+        self.result = df
         self.logger.info(f"Successfully transformed {len(self.result)} entries.")
 
     def load(self):
-        if not self.result.empty:
+        if self.result is not None:
             self.storage.upsert(
                 self.result.to_dict("records"), self.destination_metadata.name
             )
