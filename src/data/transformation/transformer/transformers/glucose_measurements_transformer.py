@@ -10,6 +10,17 @@ from src.data.transformation.transformer.transformers.abstract_transformer impor
 
 
 class GlucoseMeasurementTransformer(AbstractTransformer):
+    """
+    The GlucoseMeasurementTransformer class is used to transform the entries into glucose measurements.
+
+    Attributes:
+        source_metadata: The metadata of the source table.
+        destination_metadata: The metadata of the destination table.
+        source: The source data.
+        result: The result of the transformation.
+        runmoment: The start of the transformation. The runmoment of the destination table will be set to this value.
+    """
+
     source_metadata: TableMetadata
     destination_metadata: TableMetadata
     source: List[dict]
@@ -27,7 +38,7 @@ class GlucoseMeasurementTransformer(AbstractTransformer):
 
     def extract(self):
         """
-        Ingest the entries.
+        Ingest new entries. Then load only the new entries since the last runmoment of the destination table.
         """
         self.ingester.ingest([self.source_metadata])
         last_runmoment = self.storage.get_last_runmoment(self.destination_metadata.name)
@@ -41,6 +52,9 @@ class GlucoseMeasurementTransformer(AbstractTransformer):
         self.logger.info(f"Transforming {len(self.source)} entries.")
 
     def transform(self):
+        """
+        Transform the entries into glucose measurements. Include conversion from mg/dL to mmol/L.
+        """
         df = pd.DataFrame(self.source)
         if df.empty:
             self.logger.info("No new entries found.")
@@ -64,6 +78,9 @@ class GlucoseMeasurementTransformer(AbstractTransformer):
         self.logger.info(f"Successfully transformed {len(self.result)} entries.")
 
     def load(self):
+        """
+        Upsert the transformed entries into the destination table. Then update the last runmoment of the destination table.
+        """
         if self.result is not None:
             self.storage.upsert(
                 self.result.to_dict("records"), self.destination_metadata.name

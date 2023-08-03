@@ -14,6 +14,11 @@ from src.helpers.general import now
 class AbstractStorage(ABC):
     """
     AbstractStorage is an abstract class that defines the interface for a storage class.
+    This class itself also defines some common methods that can be used by all storage classes.
+
+    Attributes:
+        metadata: The metadata class. Used to get information about the tables.
+        logger: The logger to use to log messages.
     """
 
     metadata: Metadata
@@ -120,7 +125,7 @@ class AbstractStorage(ABC):
     def get_last_runmoment(self, source: str) -> datetime:
         """
         Get the last timestamp from the runmoments table. This is used to determine the window of data
-        to load. Return 2022-01-01 if there is no timestamp in the runmoments table.
+        to load. Return 2020-01-01 if there is no timestamp in the runmoments table.
         """
         result = self.find_one("runmoments", [("source", "eq", source)])
         return (

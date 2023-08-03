@@ -19,11 +19,9 @@ class NightscoutLoader(AbstractLoader):
     url: str
     session: requests.Session
 
-    @inject
     def __init__(self, nightscout_uri: str, nightscout_secret: str):
         """
         Create a session with the Nightscout API.
-        Read credentials from env
         """
         session = requests.Session()
         session.headers.update({"Accept": "application/json"})
@@ -37,6 +35,7 @@ class NightscoutLoader(AbstractLoader):
     ) -> List:
         """
         Load entities from endpoint between start and end timestamps.
+        Use a large count, so that all entities are loaded.
         """
         url = f"{self.url}/{endpoint}"
         params = {

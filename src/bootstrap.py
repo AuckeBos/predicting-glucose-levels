@@ -1,3 +1,6 @@
+"""
+Initialize the dependency injection container and inject dependencies.
+"""
 import logging
 import os
 
@@ -49,10 +52,9 @@ def bootstrap_di():
     di[Database] = lambda _di: _di[MongoClient][os.getenv("MONGO_DB")]
     # Logging
     di[logging.Logger] = _get_logger("logger")
-    # Nightscout
-    di["nightscout_uri"] = os.getenv("NIGHTSCOUT_URI")
-    di["nightscout_secret"] = os.getenv("NIGHTSCOUT_SECRET")
-    # Ingesti
-    di[AbstractLoader] = lambda _di: NightscoutLoader()
-    # Storage
+    # Set the NightscoutLoader as the default loader.
+    di[AbstractLoader] = lambda _di: NightscoutLoader(
+        os.getenv("NIGHTSCOUT_URI"), os.getenv("NIGHTSCOUT_SECRET")
+    )
+    # Set the MongoStorage as the default storage
     di[AbstractStorage] = lambda _di: MongoStorage()

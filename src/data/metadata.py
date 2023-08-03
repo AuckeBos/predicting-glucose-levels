@@ -9,9 +9,17 @@ from src.helpers.config import METADATA_DIR
 
 @inject
 class Metadata:
+    """
+    Metadata is a class that contains metadata about the tables in the database. It loads the metadata from JSON files in the metadata directory.
+    It is used by the storage classes to get information about the tables, based on the table name.
+    """
+
     tables: List[TableMetadata]
 
     def __init__(self) -> None:
+        """
+        Load the metadata from the JSON files in the metadata directory.
+        """
         self.tables = [
             TableMetadata(**json.load(open(f)))
             for f in (METADATA_DIR / "tables").glob("*.json")
@@ -21,7 +29,6 @@ class Metadata:
         """
         Get the metadata for a table.
         """
-        # print(self.tables)
         try:
             return next(x for x in self.tables if x.name == table)
         except StopIteration:

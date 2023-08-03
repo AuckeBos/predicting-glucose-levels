@@ -8,6 +8,9 @@ from src.data.metadata import Metadata
 class SchemaValidator:
     """
     Implements a validate() function, that consumes a JSON document and validates it against a JSON schema.
+
+    Attributes:
+        metadata: The metadata class. Used to load the JSON schema.
     """
 
     metadata: Metadata

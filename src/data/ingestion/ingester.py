@@ -17,6 +17,7 @@ class Ingester:
     Attributes:
         data_loader: The loader to use to load the data.
         storage: The storage to use to store the data.
+        logger: The logger to use to log messages.
     """
 
     data_loader: AbstractLoader

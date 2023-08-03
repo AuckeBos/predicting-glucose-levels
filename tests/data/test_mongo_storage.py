@@ -155,6 +155,23 @@ def test_inserted_at_is_added(mongo_storage):
     assert "inserted_at" in result[0]
 
 
+def test_updated_at_is_updated(mongo_storage):
+    # Arrange
+    table_name = "test_table"
+    data = [
+        {"key": 1, "value": "one"},
+    ]
+
+    # Act
+    mongo_storage.upsert(data, table_name)
+    old_updated_at = mongo_storage.get(table_name)[0]["updated_at"]
+    mongo_storage.upsert(data, table_name)
+    new_updated_at = mongo_storage.get(table_name)[0]["updated_at"]
+
+    # Assert
+    assert new_updated_at > old_updated_at
+
+
 def test_convert_query_is_used(mongo_storage):
     """
     Test that the convert_query method is called when find is called.
