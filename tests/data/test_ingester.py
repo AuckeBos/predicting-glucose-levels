@@ -74,11 +74,11 @@ def test_ingest_multiple_tables(ingester, mock_data_loader, mock_storage):
         type="source_table",
     )
     tables = [table1, table2]
-    mock_storage.get_window.side_effect = [
+    mock_storage.get_window.return_value = [
         ("2023-07-28", "2023-07-29"),
         ("2023-07-27", "2023-07-28"),
     ]
-    mock_data_loader.load.side_effect = [
+    mock_data_loader.load.return_value = [
         [
             {"key": 1, "timestamp": "2023-07-28T12:00:00"},
             {"key": 2, "timestamp": "2023-07-29T08:30:00"},
