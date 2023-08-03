@@ -1,6 +1,5 @@
-import os
 from datetime import datetime
-from pathlib import Path
+from unittest.mock import Mock
 
 import mongomock
 import pytest
@@ -8,6 +7,7 @@ from kink import di
 
 from src.data.metadata import Metadata
 from src.data.storage.mongo_storage import MongoStorage
+from src.data.table_metadata import TableMetadata
 from src.helpers import config
 
 
@@ -17,8 +17,13 @@ def mongo():
 
 
 @pytest.fixture
-def mongo_storage(mongo):
-    return MongoStorage(mongo, mongo["test_database"])
+def metadata():
+    return Mock(spec=Metadata)
+
+
+@pytest.fixture
+def mongo_storage(mongo, metadata):
+    return MongoStorage(mongo, mongo["test_database"], metadata)
 
 
 def test_insert_and_find_one(mongo_storage):
@@ -43,13 +48,16 @@ def test_insert_and_find_one(mongo_storage):
     )
 
 
-def test_upsert_and_find(mongo_storage, monkeypatch):
+def test_upsert_and_find(mongo_storage):
     # Arrange
     table_name = "test_table"
     data = [
         {"key": 1, "value": "one"},
         {"key": 2, "value": "two"},
     ]
+    mongo_storage.metadata.get_table.return_value = TableMetadata(
+        name="test_table", key_col="key", timestamp_col="timestamp", type="test_table"
+    )
 
     # Act
     mongo_storage.upsert(data, table_name)
@@ -68,6 +76,8 @@ def test_get_window(mongo_storage):
     # Arrange
     source = "test_source"
     current_time = datetime.utcnow().replace(microsecond=0)
+
+    mongo_storage.metadata.get_table().key_col = "source"
 
     # Act
     mongo_storage.set_last_runmoment(source, current_time)

@@ -1,4 +1,5 @@
 from ast import Tuple
+from logging import Logger
 from typing import Any, List
 
 import pandas as pd
@@ -6,6 +7,7 @@ from kink import inject
 from pymongo import MongoClient
 from pymongo.database import Database
 
+from src.data.metadata import Metadata
 from src.data.storage.abstract_storage import AbstractStorage
 
 
@@ -22,11 +24,17 @@ class MongoStorage(AbstractStorage):
     database: Database
 
     @inject
-    def __init__(self, client: MongoClient, database: Database):
+    def __init__(
+        self,
+        client: MongoClient,
+        database: Database,
+        metadata: Metadata,
+        logger: Logger,
+    ):
         """
         Create a connection to the MongoDB database.
         """
-        super().__init__()
+        super().__init__(metadata, logger)
         self.client = client
         self.database = database
 

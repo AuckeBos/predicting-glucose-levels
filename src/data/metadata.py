@@ -4,16 +4,17 @@ from typing import List
 from kink import inject
 
 from src.data.table_metadata import TableMetadata
+from src.helpers.config import METADATA_DIR
 
 
 @inject
 class Metadata:
     tables: List[TableMetadata]
 
-    def __init__(self, metadata_dir: str) -> None:
+    def __init__(self) -> None:
         self.tables = [
             TableMetadata(**json.load(open(f)))
-            for f in (metadata_dir / "tables").glob("*.json")
+            for f in (METADATA_DIR / "tables").glob("*.json")
         ]
 
     def get_table(self, table: str) -> TableMetadata:

@@ -11,7 +11,6 @@ from src.data.table_metadata import TableMetadata
 from src.helpers.general import now
 
 
-@inject
 class AbstractStorage(ABC):
     """
     AbstractStorage is an abstract class that defines the interface for a storage class.
