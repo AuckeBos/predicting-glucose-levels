@@ -51,11 +51,6 @@ def test_upsert_and_find(mongo_storage, monkeypatch):
         {"key": 2, "value": "two"},
     ]
 
-    # Todo: fix this test. The upsert loads the keycol and timestamp col from the table metadata. Hence we
-    #  need to mock the table metadata. We do this with:
-    #  mock_table_metadata = Mock(spec=TableMetadata)
-    #  mock_table_metadata.key_col = "key"
-
     # Act
     mongo_storage.upsert(data, table_name)
     result = mongo_storage.find(table_name, [("key", "in", [1, 2])], ["key"], False)
