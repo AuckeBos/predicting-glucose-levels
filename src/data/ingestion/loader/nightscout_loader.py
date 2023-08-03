@@ -7,7 +7,6 @@ from kink import inject
 from src.data.ingestion.loader.abstract_loader import AbstractLoader
 
 
-@inject
 class NightscoutLoader(AbstractLoader):
     """
     NightscoutLoader is a class that defines logic to load entires and treatments from a Nightscout API.
@@ -20,6 +19,7 @@ class NightscoutLoader(AbstractLoader):
     url: str
     session: requests.Session
 
+    @inject
     def __init__(self, nightscout_uri: str, nightscout_secret: str):
         """
         Create a session with the Nightscout API.

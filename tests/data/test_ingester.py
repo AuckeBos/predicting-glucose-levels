@@ -23,15 +23,6 @@ def ingester(mock_data_loader, mock_storage):
     return Ingester(mock_data_loader, mock_storage)
 
 
-def test_ingester_init(mock_data_loader, mock_storage):
-    # Arrange & Act
-    ingester = Ingester(mock_data_loader, mock_storage)
-
-    # Assert
-    assert ingester.data_loader == mock_data_loader
-    assert ingester.storage == mock_storage
-
-
 def test_ingest_single_table(ingester, mock_data_loader, mock_storage):
     # Arrange
     table = TableMetadata(

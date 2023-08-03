@@ -1,0 +1,6 @@
+{
+    "name": "test_table",
+    "key_col": "key",
+    "timestamp_col": "created_at",
+    "type": "test_table"
+}

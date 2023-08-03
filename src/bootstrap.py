@@ -1,11 +1,13 @@
 import logging
 import os
+from pathlib import Path
 
 from dotenv import find_dotenv, load_dotenv
 from kink import di
 from pymongo import MongoClient
 from pymongo.database import Database
 
+di["project_dir"] = Path(os.path.dirname(os.path.abspath(__file__))) / ".."
 from src.data.ingestion.ingester import Ingester
 from src.data.ingestion.loader.abstract_loader import AbstractLoader
 from src.data.ingestion.loader.nightscout_loader import NightscoutLoader
@@ -13,7 +15,7 @@ from src.data.metadata import Metadata
 from src.data.storage.abstract_storage import AbstractStorage
 from src.data.storage.mongo_storage import MongoStorage
 from src.data.table_metadata import TableMetadata
-from src.helpers.config import LOGS_DIR, LOGS_FILE, PROJECT_DIR
+from src.helpers.config import LOGS_DIR, LOGS_FILE, METADATA_DIR, PROJECT_DIR
 
 
 def _load_env():
@@ -54,7 +56,6 @@ def bootstrap_di():
     di["nightscout_secret"] = os.getenv("NIGHTSCOUT_SECRET")
     # Ingestion
     di[AbstractLoader] = lambda _di: NightscoutLoader()
-    di[Ingester] = lambda _di: Ingester()
     # Storage
     di[AbstractStorage] = lambda _di: MongoStorage()
-    di[Metadata]: list = Metadata()
+    di["metadata_dir"] = METADATA_DIR

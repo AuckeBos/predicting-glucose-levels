@@ -1,9 +1,14 @@
+import os
 from datetime import datetime
+from pathlib import Path
 
 import mongomock
 import pytest
+from kink import di
 
+from src.data.metadata import Metadata
 from src.data.storage.mongo_storage import MongoStorage
+from src.helpers import config
 
 
 @pytest.fixture
@@ -38,7 +43,7 @@ def test_insert_and_find_one(mongo_storage):
     )
 
 
-def test_upsert_and_find(mongo_storage):
+def test_upsert_and_find(mongo_storage, monkeypatch):
     # Arrange
     table_name = "test_table"
     data = [
@@ -52,7 +57,7 @@ def test_upsert_and_find(mongo_storage):
     #  mock_table_metadata.key_col = "key"
 
     # Act
-    mongo_storage.upsert(data, table_name, "key", "value")
+    mongo_storage.upsert(data, table_name)
     result = mongo_storage.find(table_name, [("key", "in", [1, 2])], ["key"], False)
 
     # Assert

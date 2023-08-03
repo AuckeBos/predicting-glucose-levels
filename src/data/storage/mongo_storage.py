@@ -9,7 +9,6 @@ from pymongo.database import Database
 from src.data.storage.abstract_storage import AbstractStorage
 
 
-@inject
 class MongoStorage(AbstractStorage):
     """
     The MongoStorage class is used to store data in a MongoDB database.
@@ -22,6 +21,7 @@ class MongoStorage(AbstractStorage):
     client: MongoClient
     database: Database
 
+    @inject
     def __init__(self, client: MongoClient, database: Database):
         """
         Create a connection to the MongoDB database.
