@@ -6,6 +6,8 @@ import os
 
 from dotenv import find_dotenv, load_dotenv
 from kink import di
+from prefect import get_run_logger
+from prefect.logging.loggers import PrefectLogAdapter
 from pymongo import MongoClient
 from pymongo.database import Database
 
@@ -31,8 +33,8 @@ def _get_logger(name: str):
     """
     Get a logger with a file handler.
     """
+    logger = get_run_logger()
     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    logger = logging.getLogger(name)
     os.makedirs(LOGS_DIR, exist_ok=True)
     fhandler = logging.FileHandler(filename=LOGS_FILE, mode="a")
     formatter = logging.Formatter(log_fmt)
@@ -57,7 +59,8 @@ def bootstrap_di():
     )
     di[Database] = lambda _di: _di[MongoClient][os.getenv("MONGO_DB")]
     # Logging
-    di[logging.Logger] = _get_logger("logger")
+    di[logging.Logger] = lambda di: _get_logger("logger")
+    di[PrefectLogAdapter] = lambda di: get_run_logger()
     # Set the NightscoutLoader as the default loader.
     di[AbstractLoader] = lambda _di: NightscoutLoader(
         os.getenv("NIGHTSCOUT_URI"), os.getenv("NIGHTSCOUT_SECRET")

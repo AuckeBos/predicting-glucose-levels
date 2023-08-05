@@ -4,6 +4,7 @@ from typing import Any, List
 
 import pandas as pd
 from kink import inject
+from prefect.logging.loggers import PrefectLogAdapter
 from pymongo import MongoClient
 from pymongo.database import Database
 
@@ -29,7 +30,7 @@ class MongoStorage(AbstractStorage):
         client: MongoClient,
         database: Database,
         metadata: Metadata,
-        logger: Logger,
+        logger: PrefectLogAdapter,
     ):
         """
         Create a connection to the MongoDB database.
