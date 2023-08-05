@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from logging import Logger
 
 from kink import inject
+from prefect.logging.loggers import PrefectLogAdapter
 
 from predicting_glucose_levels.data.ingestion.ingester import Ingester
 from predicting_glucose_levels.data.metadata import Metadata
@@ -23,7 +24,7 @@ class BaseTransformer(ABC):
     schema_validator: SchemaValidator
     ingester: Ingester
     storage: AbstractStorage
-    logger: Logger
+    logger: PrefectLogAdapter
     metadata: Metadata
 
     def __init__(
@@ -31,7 +32,7 @@ class BaseTransformer(ABC):
         storage: AbstractStorage,
         ingester: Ingester,
         schema_validator: SchemaValidator,
-        logger: Logger,
+        logger: PrefectLogAdapter,
         metadata: Metadata,
     ):
         self.storage = storage

@@ -1,5 +1,6 @@
 import click
 from kink import di, inject
+from prefect import flow
 
 from predicting_glucose_levels.data.ingestion.ingester import Ingester
 from predicting_glucose_levels.data.metadata import Metadata
@@ -19,16 +20,19 @@ def cli():
 
 @cli.command
 @inject
+@flow(validate_parameters=False, log_prints=True)
 def ingest(metadata: Metadata):
     """
     Ingest all source tables.
     """
+    print("test")
     ingester = Ingester()
     tables = [t for t in metadata.tables if t.type == "source_table"]
     ingester.ingest(tables)
 
 
 @cli.command
+@flow(validate_parameters=False, log_prints=True)
 def transform():
     """
     Run all defined transformers.

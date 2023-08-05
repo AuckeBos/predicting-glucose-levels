@@ -2,6 +2,7 @@ from logging import Logger
 from typing import List
 
 from kink import inject
+from prefect.logging.loggers import PrefectLogAdapter
 
 from predicting_glucose_levels.data.ingestion.loader.abstract_loader import (
     AbstractLoader,
@@ -24,10 +25,13 @@ class Ingester:
 
     data_loader: AbstractLoader
     storage: AbstractStorage
-    logger: Logger
+    logger: PrefectLogAdapter
 
     def __init__(
-        self, data_loader: AbstractLoader, storage: AbstractStorage, logger: Logger
+        self,
+        data_loader: AbstractLoader,
+        storage: AbstractStorage,
+        logger: PrefectLogAdapter,
     ):
         self.data_loader = data_loader
         self.storage = storage
