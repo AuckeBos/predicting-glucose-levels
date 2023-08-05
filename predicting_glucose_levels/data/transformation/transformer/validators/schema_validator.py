@@ -1,7 +1,7 @@
 import jsonschema
 from kink import inject
 
-from src.data.metadata import Metadata
+from predicting_glucose_levels.data.metadata import Metadata
 
 
 @inject

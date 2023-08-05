@@ -6,9 +6,9 @@ from typing import Any, List, Optional, Tuple
 import pandas as pd
 from kink import inject
 
-from src.data.metadata import Metadata
-from src.data.table_metadata import TableMetadata
-from src.helpers.general import now
+from predicting_glucose_levels.data.metadata import Metadata
+from predicting_glucose_levels.data.table_metadata import TableMetadata
+from predicting_glucose_levels.helpers.general import now
 
 
 class AbstractStorage(ABC):

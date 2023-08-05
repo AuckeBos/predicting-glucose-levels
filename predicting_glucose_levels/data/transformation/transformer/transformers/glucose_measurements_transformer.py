@@ -3,8 +3,8 @@ from typing import List
 
 import pandas as pd
 
-from src.data.table_metadata import TableMetadata
-from src.data.transformation.transformer.transformers.abstract_transformer import (
+from predicting_glucose_levels.data.table_metadata import TableMetadata
+from predicting_glucose_levels.data.transformation.transformer.transformers.abstract_transformer import (
     AbstractTransformer,
 )
 

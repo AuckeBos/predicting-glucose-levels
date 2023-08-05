@@ -4,7 +4,9 @@ from typing import List
 import requests
 from kink import inject
 
-from src.data.ingestion.loader.abstract_loader import AbstractLoader
+from predicting_glucose_levels.data.ingestion.loader.abstract_loader import (
+    AbstractLoader,
+)
 
 
 class NightscoutLoader(AbstractLoader):

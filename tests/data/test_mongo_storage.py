@@ -5,10 +5,10 @@ import mongomock
 import pytest
 from kink import di
 
-from src.data.metadata import Metadata
-from src.data.storage.mongo_storage import MongoStorage
-from src.data.table_metadata import TableMetadata
-from src.helpers import config
+from predicting_glucose_levels.data.metadata import Metadata
+from predicting_glucose_levels.data.storage.mongo_storage import MongoStorage
+from predicting_glucose_levels.data.table_metadata import TableMetadata
+from predicting_glucose_levels.helpers import config
 
 
 @pytest.fixture

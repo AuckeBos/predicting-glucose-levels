@@ -3,14 +3,14 @@ from logging import Logger
 
 from kink import inject
 
-from src.data.ingestion.ingester import Ingester
-from src.data.metadata import Metadata
-from src.data.storage.abstract_storage import AbstractStorage
-from src.data.table_metadata import TableMetadata
-from src.data.transformation.transformer.validators.schema_validator import (
+from predicting_glucose_levels.data.ingestion.ingester import Ingester
+from predicting_glucose_levels.data.metadata import Metadata
+from predicting_glucose_levels.data.storage.abstract_storage import AbstractStorage
+from predicting_glucose_levels.data.table_metadata import TableMetadata
+from predicting_glucose_levels.data.transformation.transformer.validators.schema_validator import (
     SchemaValidator,
 )
-from src.helpers.config import PROJECT_DIR
+from predicting_glucose_levels.helpers.config import PROJECT_DIR
 
 
 @inject

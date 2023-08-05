@@ -3,8 +3,8 @@ from typing import List
 
 from kink import inject
 
-from src.data.table_metadata import TableMetadata
-from src.helpers.config import METADATA_DIR
+from predicting_glucose_levels.data.table_metadata import TableMetadata
+from predicting_glucose_levels.helpers.config import METADATA_DIR
 
 
 @inject

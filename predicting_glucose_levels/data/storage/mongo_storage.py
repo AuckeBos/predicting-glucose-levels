@@ -7,8 +7,8 @@ from kink import inject
 from pymongo import MongoClient
 from pymongo.database import Database
 
-from src.data.metadata import Metadata
-from src.data.storage.abstract_storage import AbstractStorage
+from predicting_glucose_levels.data.metadata import Metadata
+from predicting_glucose_levels.data.storage.abstract_storage import AbstractStorage
 
 
 class MongoStorage(AbstractStorage):
@@ -37,6 +37,7 @@ class MongoStorage(AbstractStorage):
         super().__init__(metadata, logger)
         self.client = client
         self.database = database
+        self.test_connection()
 
     def convert_query(self, query: List[Tuple] = None) -> Any:
         """
@@ -91,3 +92,13 @@ class MongoStorage(AbstractStorage):
             with session.start_transaction():
                 self.database[table].drop()
                 self._insert(data.to_dict("records"), table)
+
+    def test_connection(self) -> None:
+        """
+        Test if the client is connected to the database.
+        """
+        try:
+            self.client.server_info()
+        except Exception as e:
+            self.logger.error(e)
+            raise Exception("Could not connect to MongoDB. Is the server running")

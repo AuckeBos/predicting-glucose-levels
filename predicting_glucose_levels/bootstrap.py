@@ -9,14 +9,18 @@ from kink import di
 from pymongo import MongoClient
 from pymongo.database import Database
 
-from src.data.ingestion.ingester import Ingester
-from src.data.ingestion.loader.abstract_loader import AbstractLoader
-from src.data.ingestion.loader.nightscout_loader import NightscoutLoader
-from src.data.metadata import Metadata
-from src.data.storage.abstract_storage import AbstractStorage
-from src.data.storage.mongo_storage import MongoStorage
-from src.data.table_metadata import TableMetadata
-from src.helpers.config import LOGS_DIR, LOGS_FILE, METADATA_DIR
+from predicting_glucose_levels.data.ingestion.ingester import Ingester
+from predicting_glucose_levels.data.ingestion.loader.abstract_loader import (
+    AbstractLoader,
+)
+from predicting_glucose_levels.data.ingestion.loader.nightscout_loader import (
+    NightscoutLoader,
+)
+from predicting_glucose_levels.data.metadata import Metadata
+from predicting_glucose_levels.data.storage.abstract_storage import AbstractStorage
+from predicting_glucose_levels.data.storage.mongo_storage import MongoStorage
+from predicting_glucose_levels.data.table_metadata import TableMetadata
+from predicting_glucose_levels.helpers.config import LOGS_DIR, LOGS_FILE, METADATA_DIR
 
 
 def _load_env():
@@ -48,6 +52,8 @@ def bootstrap_di():
         os.getenv("MONGO_URI"),
         username=os.getenv("MONGO_USER"),
         password=os.getenv("MONGO_PASSWORD"),
+        serverSelectionTimeoutMS=1000,
+        connectTimeoutMS=1000,
     )
     di[Database] = lambda _di: _di[MongoClient][os.getenv("MONGO_DB")]
     # Logging

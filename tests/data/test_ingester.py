@@ -2,10 +2,12 @@ from unittest.mock import Mock
 
 import pytest
 
-from src.data.ingestion.ingester import Ingester
-from src.data.ingestion.loader.abstract_loader import AbstractLoader
-from src.data.storage.abstract_storage import AbstractStorage
-from src.data.table_metadata import TableMetadata
+from predicting_glucose_levels.data.ingestion.ingester import Ingester
+from predicting_glucose_levels.data.ingestion.loader.abstract_loader import (
+    AbstractLoader,
+)
+from predicting_glucose_levels.data.storage.abstract_storage import AbstractStorage
+from predicting_glucose_levels.data.table_metadata import TableMetadata
 
 
 @pytest.fixture

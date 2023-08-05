@@ -1,4 +1,4 @@
-from src.data.transformation.transformer.transformers.abstract_transformer import (
+from predicting_glucose_levels.data.transformation.transformer.transformers.abstract_transformer import (
     AbstractTransformer,
 )
 
