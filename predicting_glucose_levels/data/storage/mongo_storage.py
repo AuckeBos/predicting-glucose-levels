@@ -38,6 +38,7 @@ class MongoStorage(AbstractStorage):
         self.client = client
         self.database = database
         self.test_connection()
+        self.set_indexes()
 
     def convert_query(self, query: List[Tuple] = None) -> Any:
         """
@@ -102,3 +103,22 @@ class MongoStorage(AbstractStorage):
         except Exception as e:
             self.logger.error(e)
             raise Exception("Could not connect to MongoDB. Is the server running")
+
+    def set_indexes(self) -> None:
+        """
+        Set indexes on the tables.
+        - Index on glucose_measurement_id of glucose_measurements
+        """
+        # Check if index already exists
+        if "glucose_measurements" not in self.database.list_collection_names():
+            return
+
+        if (
+            "glucose_measurement_id_index"
+            in self.database["glucose_measurements"].index_information()
+        ):
+            return
+
+        self.database["glucose_measurements"].create_index(
+            "glucose_measurement_id", unique=True
+        )
