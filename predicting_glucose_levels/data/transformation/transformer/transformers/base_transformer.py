@@ -14,7 +14,7 @@ from predicting_glucose_levels.helpers.config import PROJECT_DIR
 
 
 @inject
-class AbstractTransformer(ABC):
+class BaseTransformer(ABC):
     """
     Base Transformer class. Will be implemented by concrete transformer classes.
     Concrete implementations must implement ETL methods for specific destination tables.

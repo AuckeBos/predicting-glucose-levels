@@ -4,12 +4,12 @@ from typing import List
 import pandas as pd
 
 from predicting_glucose_levels.data.table_metadata import TableMetadata
-from predicting_glucose_levels.data.transformation.transformer.transformers.abstract_transformer import (
-    AbstractTransformer,
+from predicting_glucose_levels.data.transformation.transformer.transformers.base_transformer import (
+    BaseTransformer,
 )
 
 
-class GlucoseMeasurementTransformer(AbstractTransformer):
+class GlucoseMeasurementTransformer(BaseTransformer):
     """
     The GlucoseMeasurementTransformer class is used to transform the entries into glucose measurements.
 
