@@ -3,6 +3,9 @@ from kink import di, inject
 
 from predicting_glucose_levels.data.ingestion.ingester import Ingester
 from predicting_glucose_levels.data.metadata import Metadata
+from predicting_glucose_levels.data.transformation.transformer.transformers.base_transformer import (
+    BaseTransformer,
+)
 from predicting_glucose_levels.data.transformation.transformer.transformers.glucose_measurements_transformer import (
     GlucoseMeasurementTransformer,
 )
@@ -27,7 +30,10 @@ def ingest(metadata: Metadata):
 
 @cli.command
 def transform():
-    transformers = [GlucoseMeasurementTransformer()]
+    """
+    Run all defined transformers.
+    """
+    transformers = [x() for x in BaseTransformer.__subclasses__()]
     for transformer in transformers:
         transformer.etl()
 
@@ -37,7 +43,17 @@ def test():
     """
     Testing function
     """
+    print(BaseTransformer.__subclasses__())
     pass
+
+
+@cli.command
+def help():
+    """
+    Show the help message.
+    """
+    ctx = click.Context(cli)
+    click.echo(ctx.get_help())
 
 
 if __name__ == "__main__":
