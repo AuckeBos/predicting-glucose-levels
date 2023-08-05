@@ -55,7 +55,7 @@ def bootstrap_di():
         serverSelectionTimeoutMS=1000,
         connectTimeoutMS=1000,
     )
-    di[Database] = lambda _di: _di[MongoClient][os.getenv("MONGO_DB")]
+    di[Database] = lambda _di: _di[MongoClient][os.getenv("MONGO_DB", "MYDB")]
     # Logging
     di[logging.Logger] = _get_logger("logger")
     # Set the NightscoutLoader as the default loader.

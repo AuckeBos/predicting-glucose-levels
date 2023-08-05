@@ -39,6 +39,7 @@ class Ingester:
         Loop over all tables in the storage, and ingest the data.
         For each data type, read and write runmoments.
         """
+        self.storage.setup()
         self.logger.info(f"Ingesting {len(tables)} tables")
         for table in tables:
             start, end = self.storage.get_window(table.name)

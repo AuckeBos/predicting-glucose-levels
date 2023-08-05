@@ -37,6 +37,8 @@ class MongoStorage(AbstractStorage):
         super().__init__(metadata, logger)
         self.client = client
         self.database = database
+
+    def setup(self):
         self.test_connection()
         self.set_indexes()
 

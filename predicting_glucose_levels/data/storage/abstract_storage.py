@@ -29,6 +29,13 @@ class AbstractStorage(ABC):
         self.logger = logger
 
     @abstractmethod
+    def setup(self) -> None:
+        """
+        Setup the storage. This method should be called before any other method is called.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
     def _upsert(self, data: List, table: str, key_col: str, timestamp_col: str) -> None:
         """
         Upsert a list of rows into a table. Use the key_col to identify the row and the timestamp_col to
