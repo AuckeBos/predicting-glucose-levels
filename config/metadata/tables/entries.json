@@ -1,0 +1,103 @@
+{
+    "name": "entries",
+    "endpoint": "entries",
+    "key_col": "_id",
+    "timestamp_col": "dateString",
+    "type": "source_table",
+    "schema": {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "integer"
+                },
+                "dateString": {
+                    "type": "string",
+                    "properties": {
+                        "datetime": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    }
+                },
+                "delta": {
+                    "type": "number"
+                },
+                "device": {
+                    "type": "string"
+                },
+                "direction": {
+                    "type": "string"
+                },
+                "filtered": {
+                    "type": "number"
+                },
+                "noise": {
+                    "type": "integer"
+                },
+                "rssi": {
+                    "type": "integer"
+                },
+                "sgv": {
+                    "type": "integer"
+                },
+                "mbg": {
+                    "type": "number"
+                },
+                "sysTime": {
+                    "type": "string",
+                    "properties": {
+                        "datetime": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    }
+                },
+                "type": {
+                    "type": "string"
+                },
+                "unfiltered": {
+                    "type": "number"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "properties": {
+                        "datetime": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    }
+                },
+                "utcOffset": {
+                    "type": "integer"
+                }
+            },
+            "oneOf": [
+                {
+                    "required": [
+                        "mbg"
+                    ]
+                },
+                {
+                    "required": [
+                        "sgv"
+                    ]
+                }
+            ],
+            "required": [
+                "_id",
+                "date",
+                "dateString",
+                "device",
+                "sysTime",
+                "type",
+                "updated_at",
+                "utcOffset"
+            ]
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "name": "glucose_measurements",
+    "key_col": "glucose_measurement_id",
+    "timestamp_col": "updated_at",
+    "type": "destination_table"
+}

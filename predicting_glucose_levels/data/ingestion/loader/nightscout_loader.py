@@ -1,10 +1,12 @@
-import os
 from datetime import datetime
 from typing import List
 
 import requests
+from kink import inject
 
-from src.data.ingestion.loader.abstract_loader import AbstractLoader
+from predicting_glucose_levels.data.ingestion.loader.abstract_loader import (
+    AbstractLoader,
+)
 
 
 class NightscoutLoader(AbstractLoader):
@@ -19,24 +21,23 @@ class NightscoutLoader(AbstractLoader):
     url: str
     session: requests.Session
 
-    def __init__(self):
+    def __init__(self, nightscout_uri: str, nightscout_secret: str):
         """
         Create a session with the Nightscout API.
-        Read credentials from env
         """
         session = requests.Session()
         session.headers.update({"Accept": "application/json"})
-        secret = os.getenv("NIGHTSCOUT_SECRET")
-        session.headers.update({"api_secret": secret})
+        session.headers.update({"api_secret": nightscout_secret})
         self.session = session
 
-        self.url = os.getenv("NIGHTSCOUT_URI")
+        self.url = nightscout_uri
 
     def load(
         self, start: datetime, end: datetime, endpoint: str, timestamp_col: str
     ) -> List:
         """
         Load entities from endpoint between start and end timestamps.
+        Use a large count, so that all entities are loaded.
         """
         url = f"{self.url}/{endpoint}"
         params = {

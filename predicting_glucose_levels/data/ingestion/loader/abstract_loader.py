@@ -5,7 +5,8 @@ from typing import List
 
 class AbstractLoader(ABC):
     """
-    AbstractLoader is an abstract class that defines logic to load measurements from a data source.
+    AbstractLoader is an abstract class that defines the interface for a loader class.
+    A loader is used to load data from a data source.
     """
 
     def __init__(self, storage):
