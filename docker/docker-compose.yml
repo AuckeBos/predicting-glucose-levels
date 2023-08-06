@@ -9,6 +9,7 @@ services:
       - 27017:27017
     volumes:
       - mongodb_data_container:/data/db
+    restart: unless-stopped
   mongo-express:
     image: mongo-express:latest
     ports:
@@ -17,6 +18,12 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root # todo
       ME_CONFIG_MONGODB_ADMINPASSWORD: rootpassword # todo
       ME_CONFIG_MONGODB_SERVER: mongodb
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+  
+  predicting-glucose-levels:
+    image: predicting-glucose-levels:latest
     depends_on:
       - mongodb
     restart: unless-stopped
