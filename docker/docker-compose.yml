@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
   
   predicting-glucose-levels:
-    image: predicting-glucose-levels:latest
+    image: auckebos/predicting-glucose-levels:latest
     depends_on:
       - mongodb
     restart: unless-stopped
