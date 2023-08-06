@@ -3,8 +3,10 @@ services:
   mongodb:
     image: mongo:latest
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root # todo
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword # todo
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    env_file:
+      - ../.env
     ports:
       - 27017:27017
     volumes:
@@ -15,9 +17,11 @@ services:
     ports:
       - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root # todo
-      ME_CONFIG_MONGODB_ADMINPASSWORD: rootpassword # todo
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
       ME_CONFIG_MONGODB_SERVER: mongodb
+    env_file:
+      - ../.env
     depends_on:
       - mongodb
     restart: unless-stopped
@@ -27,5 +31,7 @@ services:
     depends_on:
       - mongodb
     restart: unless-stopped
+    env_file:
+      - ../.env
 volumes:
   mongodb_data_container:
