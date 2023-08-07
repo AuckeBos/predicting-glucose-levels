@@ -36,5 +36,12 @@ services:
     restart: unless-stopped
     env_file:
       - ../.env
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: predicting-glucose-levels
 volumes:
   mongodb_data_container:
