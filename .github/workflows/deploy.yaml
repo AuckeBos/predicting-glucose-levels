@@ -11,6 +11,7 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    environment: main
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
