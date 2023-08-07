@@ -1,24 +1,48 @@
 version: '3.7'
 services:
   mongodb:
-    image: mongo:latest
+    image: mongo:4.2.0
+    container_name: mongo-db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root # todo
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword # todo
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    env_file:
+      - ../.env
     ports:
       - 27017:27017
     volumes:
       - mongodb_data_container:/data/db
+    restart: unless-stopped
   mongo-express:
     image: mongo-express:latest
+    container_name: mongo-ui
     ports:
       - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root # todo
-      ME_CONFIG_MONGODB_ADMINPASSWORD: rootpassword # todo
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
       ME_CONFIG_MONGODB_SERVER: mongodb
+    env_file:
+      - ../.env
     depends_on:
       - mongodb
     restart: unless-stopped
+  
+  predicting-glucose-levels:
+    image: index.docker.io/auckebos/predicting-glucose-levels:latest
+    container_name: predicting-glucose-levels
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    env_file:
+      - ../.env
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/config.json:/config.json
+    command: predicting-glucose-levels
 volumes:
   mongodb_data_container:
