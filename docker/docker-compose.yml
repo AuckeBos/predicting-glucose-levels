@@ -1,7 +1,8 @@
 version: '3.7'
 services:
   mongodb:
-    image: mongo:latest
+    image: mongo:4.2.0
+    container_name: mongo-db
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
@@ -14,6 +15,7 @@ services:
     restart: unless-stopped
   mongo-express:
     image: mongo-express:latest
+    container_name: mongo-ui
     ports:
       - 8081:8081
     environment:
@@ -28,6 +30,7 @@ services:
   
   predicting-glucose-levels:
     image: auckebos/predicting-glucose-levels:latest
+    container_name: predicting-glucose-levels
     depends_on:
       - mongodb
     restart: unless-stopped
