@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
   
   predicting-glucose-levels:
-    image: auckebos/predicting-glucose-levels:latest
+    image: index.docker.io/auckebos/predicting-glucose-levels:latest
     container_name: predicting-glucose-levels
     depends_on:
       - mongodb
@@ -42,6 +42,7 @@ services:
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/config.json:/config.json
     command: predicting-glucose-levels
 volumes:
   mongodb_data_container:
