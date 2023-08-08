@@ -25,7 +25,6 @@ def ingest(metadata: Metadata):
     """
     Ingest all source tables.
     """
-    print("test")
     ingester = Ingester()
     tables = [t for t in metadata.tables if t.type == "source_table"]
     ingester.ingest(tables)
