@@ -7,12 +7,13 @@ import pandas as pd
 from kink import inject
 from prefect.logging.loggers import PrefectLogAdapter
 
+from predicting_glucose_levels.base_model import BaseModel
 from predicting_glucose_levels.data.metadata import Metadata
 from predicting_glucose_levels.data.table_metadata import TableMetadata
 from predicting_glucose_levels.helpers.general import now
 
 
-class AbstractStorage(ABC):
+class AbstractStorage(ABC, BaseModel):
     """
     AbstractStorage is an abstract class that defines the interface for a storage class.
     This class itself also defines some common methods that can be used by all storage classes.
