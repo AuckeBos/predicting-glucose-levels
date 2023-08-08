@@ -16,8 +16,8 @@ RUN chmod -R 755 /home/$USERNAME
 RUN pip install poetry
 
 # Copy files
-COPY --chown=${USERNAME}:${USERNAME} predicting_glucose_levels /home/${USERNAME}/predicting_glucose_levels
-COPY --chown=${USERNAME}:${USERNAME} pyproject.toml poetry.lock /home/${USERNAME}/
+COPY --chown=${USERNAME}:${USERNAME} ./predicting_glucose_levels /home/${USERNAME}/predicting_glucose_levels
+COPY --chown=${USERNAME}:${USERNAME} ./pyproject.toml ./poetry.lock /home/${USERNAME}/
 
 # Install deps
 WORKDIR /home/${USERNAME}

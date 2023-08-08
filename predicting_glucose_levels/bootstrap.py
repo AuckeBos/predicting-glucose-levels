@@ -22,7 +22,7 @@ from predicting_glucose_levels.data.metadata import Metadata
 from predicting_glucose_levels.data.storage.abstract_storage import AbstractStorage
 from predicting_glucose_levels.data.storage.mongo_storage import MongoStorage
 from predicting_glucose_levels.data.table_metadata import TableMetadata
-from predicting_glucose_levels.helpers.config import LOGS_DIR, LOGS_FILE, METADATA_DIR
+from predicting_glucose_levels.helpers.config import LOGS_DIR, LOGS_FILE
 
 
 def _load_env():

@@ -27,13 +27,17 @@ services:
     restart: unless-stopped
   
   predicting-glucose-levels:
-    image: index.docker.io/auckebos/predicting-glucose-levels:latest
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
     container_name: glucose
     depends_on:
       - mongodb
     restart: unless-stopped
     env_file:
       - ../.env
+    volumes:
+      - ../predicting_glucose_levels:/home/glucose/predicting_glucose_levels      
 
   watchtower:
     image: containrrr/watchtower
