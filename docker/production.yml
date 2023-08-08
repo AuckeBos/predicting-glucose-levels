@@ -1,0 +1,4 @@
+version: '3.7'
+services:
+  predicting-glucose-levels:
+    image: index.docker.io/auckebos/predicting-glucose-levels:latest

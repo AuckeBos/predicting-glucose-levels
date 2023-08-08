@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  predicting-glucose-levels:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - ../predicting_glucose_levels:/home/glucose/predicting_glucose_levels

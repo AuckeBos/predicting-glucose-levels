@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
   
   predicting-glucose-levels:
-    image: index.docker.io/auckebos/predicting-glucose-levels:latest
+    # Image is set in production.yml
     container_name: predicting-glucose-levels
     depends_on:
       - mongodb
