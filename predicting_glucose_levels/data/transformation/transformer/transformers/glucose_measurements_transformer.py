@@ -82,6 +82,8 @@ class GlucoseMeasurementTransformer(BaseTransformer):
         Upsert the transformed entries into the destination table. Then update the last runmoment of the destination table.
         """
         if self.result is not None:
+            # todo: if empty, overwrite. Else upsert.
+            # self.storage.overwrite(self.result, self.destination_metadata.name)
             self.storage.upsert(
                 self.result.to_dict("records"), self.destination_metadata.name
             )

@@ -2,16 +2,14 @@ import datetime
 from abc import ABC, abstractmethod
 from typing import List
 
-from predicting_glucose_levels.base_model import BaseModel
 
-
-class AbstractLoader(ABC, BaseModel):
+class AbstractLoader(ABC):
     """
     AbstractLoader is an abstract class that defines the interface for a loader class.
     A loader is used to load data from a data source.
     """
 
-    def __init__(self, storage):
+    def __init__(self):
         raise NotImplementedError
 
     @abstractmethod

@@ -4,8 +4,8 @@ from typing import List
 from kink import inject
 from prefect import flow, task
 from prefect.logging.loggers import PrefectLogAdapter
+from pydantic import validator
 
-from predicting_glucose_levels.base_model import BaseModel
 from predicting_glucose_levels.data.ingestion.loader.abstract_loader import (
     AbstractLoader,
 )
@@ -14,7 +14,7 @@ from predicting_glucose_levels.data.table_metadata import TableMetadata
 
 
 @inject
-class Ingester(BaseModel):
+class Ingester:
     """
     The ingester class is used to ingest data from a data source into a storage.
     It uses a loader to load the data and a storage to store the data.
@@ -46,7 +46,6 @@ class Ingester(BaseModel):
         """
         self.tables = tables
 
-    @task()
     def ingest(self, tables: List[TableMetadata]):
         """
         Ingest a new batch of data.

@@ -1,7 +1,8 @@
 import click
 from kink import di, inject
-from prefect import flow
+from prefect import flow, task
 
+from predicting_glucose_levels.data import table_metadata
 from predicting_glucose_levels.data.ingestion.ingester import Ingester
 from predicting_glucose_levels.data.metadata import Metadata
 from predicting_glucose_levels.data.transformation.transformer.transformers.base_transformer import (
@@ -20,25 +21,36 @@ def cli():
 
 @cli.command
 @inject
-@flow(validate_parameters=False, log_prints=True)
+@flow(validate_parameters=False)
 def ingest(metadata: Metadata):
     """
     Ingest all source tables.
     """
-    ingester = Ingester()
+
+    @task
+    def ingest_one(table: table_metadata):
+        ingester = Ingester()
+        ingester.ingest(tables=[table])
+
     tables = [t for t in metadata.tables if t.type == "source_table"]
-    ingester.ingest(tables)
+    for table in tables:
+        ingest_one(table)
 
 
 @cli.command
-@flow(validate_parameters=False, log_prints=True)
+@flow(validate_parameters=False)
 def transform():
     """
     Run all defined transformers.
     """
-    transformers = [x() for x in BaseTransformer.__subclasses__()]
-    for transformer in transformers:
+
+    @task
+    def transform_one(_cls):
+        transformer = _cls()
         transformer.etl()
+
+    for _cls in BaseTransformer.__subclasses__():
+        transform_one(_cls)
 
 
 @cli.command
