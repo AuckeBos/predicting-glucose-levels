@@ -14,17 +14,19 @@ RUN chmod -R 755 /home/$USERNAME
 
 # Install poetry
 RUN pip install poetry
-
 # Copy files
-COPY --chown=${USERNAME}:${USERNAME} ./predicting_glucose_levels /home/${USERNAME}/predicting_glucose_levels
-COPY --chown=${USERNAME}:${USERNAME} ./pyproject.toml ./poetry.lock /home/${USERNAME}/
+COPY --chown=${USERNAME}:${USERNAME} ./pyproject.toml ./poetry.lock ./docker/entrypoint.sh /home/${USERNAME}/
+COPY --chown=${USERNAME}:${USERNAME} ./predicting_glucose_levels /home/${USERNAME}/predicting_glucose_levels    
 
 # Install deps
 WORKDIR /home/${USERNAME}
-
 RUN poetry config virtualenvs.create false && \
     poetry install --no-interaction --no-ansi
+    
+
 
 USER $USERNAME
-# Temp set entrypoint
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+# Todo: Use env var username
+# ENTRYPOINT /home/glucose/docker/entrypoint.sh
+
+ENTRYPOINT ["/bin/sh", "-c", "/home/${USERNAME}/entrypoint.sh"]
