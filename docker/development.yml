@@ -69,18 +69,6 @@ services:
     depends_on:
       - prefect-server      
 
-  prefect-cli:
-    image: prefecthq/prefect:2.10.17-python3.11
-    container_name: prefect-cli
-    working_dir: "/root/flows"
-    volumes:
-      - "../flows:/root/flows"
-    environment:
-      - PREFECT_API_URL=${PREFECT_API_URL}
-    depends_on:
-      - prefect-server
-    tty: true
-
 volumes:
   mongodb_data:
   prefect:

@@ -20,8 +20,8 @@ def cli():
     pass
 
 
-@cli.command
-@inject
+# @cli.command
+# @inject
 @flow(validate_parameters=False)
 def ingest(metadata: Metadata):
     """
@@ -70,10 +70,3 @@ def help():
     """
     ctx = click.Context(cli)
     click.echo(ctx.get_help())
-
-
-if __name__ == "__main__":
-    pass
-    ingest()
-    # transform()
-    # cli()
