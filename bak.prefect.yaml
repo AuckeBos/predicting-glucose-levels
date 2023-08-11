@@ -1,0 +1,22 @@
+name: predicting-glucose-levels
+prefect-version: 2.11.3
+
+build: null
+
+push: null
+
+# pull section allows you to provide instructions for cloning this project in remote locations
+pull:
+- prefect.deployments.steps.git_clone:
+    repository: git@github.com:AuckeBos/predicting-glucose-levels.git
+    branch: add-prefect
+    access_token: null
+
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+- name: ingest
+  schedule: {}
+  entrypoint: "predicting_glucose_levels.flows:ingest"
+  work_pool:
+    name: "default-agent-pool"
+    work_queue_name: "default"
