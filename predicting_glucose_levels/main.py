@@ -27,14 +27,9 @@ def ingest(metadata: Metadata):
     Ingest all source tables.
     """
 
-    @task
-    def ingest_one(table: table_metadata):
-        ingester = Ingester()
-        ingester.ingest(tables=[table])
-
     tables = [t for t in metadata.tables if t.type == "source_table"]
-    for table in tables:
-        ingest_one(table)
+    ingester = Ingester()
+    ingester.ingest(tables=tables)
 
 
 @cli.command

@@ -40,12 +40,6 @@ class Ingester:
         self.storage = storage
         self.logger = logger
 
-    def set_tables(self, tables: List[TableMetadata]):
-        """
-        Set the tables to ingest.
-        """
-        self.tables = tables
-
     def ingest(self, tables: List[TableMetadata]):
         """
         Ingest a new batch of data.
