@@ -7,24 +7,23 @@ ARG UID=1000
 ARG GID=$UID
 RUN apt update && \
     apt install -y sudo && \
-    addgroup --gid $GID ${USERNAME} && \
+    addgroup --gid $GID glucose && \
     adduser --uid $UID --gid $GID --disabled-password --gecos "" ${USERNAME} && \
     echo '${USERNAME} ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 RUN chmod -R 755 /home/$USERNAME
 
 # Install poetry
 RUN pip install poetry
-
 # Copy files
-COPY --chown=${USERNAME}:${USERNAME} predicting_glucose_levels /home/${USERNAME}/predicting_glucose_levels
-COPY --chown=${USERNAME}:${USERNAME} pyproject.toml poetry.lock /home/${USERNAME}/
+COPY --chown=${USERNAME}:${USERNAME} ./pyproject.toml ./poetry.lock ./docker/entrypoint.sh /home/${USERNAME}/
+COPY --chown=${USERNAME}:${USERNAME} ./predicting_glucose_levels /home/${USERNAME}/predicting_glucose_levels    
+RUN chmod +x /home/${USERNAME}/entrypoint.sh
 
 # Install deps
 WORKDIR /home/${USERNAME}
-
 RUN poetry config virtualenvs.create false && \
     poetry install --no-interaction --no-ansi
 
 USER $USERNAME
-# Temp set entrypoint
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENV USERNAME=${USERNAME}
+ENTRYPOINT ["/bin/sh", "-c", "/home/${USERNAME}/entrypoint.sh"]

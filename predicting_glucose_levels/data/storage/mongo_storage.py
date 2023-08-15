@@ -1,9 +1,10 @@
 from ast import Tuple
-from logging import Logger
+from logging import LoggerAdapter
 from typing import Any, List
 
 import pandas as pd
 from kink import inject
+from prefect.logging.loggers import PrefectLogAdapter
 from pymongo import MongoClient
 from pymongo.database import Database
 
@@ -29,7 +30,7 @@ class MongoStorage(AbstractStorage):
         client: MongoClient,
         database: Database,
         metadata: Metadata,
-        logger: Logger,
+        logger: LoggerAdapter,
     ):
         """
         Create a connection to the MongoDB database.
@@ -104,7 +105,7 @@ class MongoStorage(AbstractStorage):
             self.client.server_info()
         except Exception as e:
             self.logger.error(e)
-            raise Exception("Could not connect to MongoDB. Is the server running")
+            raise Exception("Could not connect to MongoDB. Is the server running?")
 
     def set_indexes(self) -> None:
         """

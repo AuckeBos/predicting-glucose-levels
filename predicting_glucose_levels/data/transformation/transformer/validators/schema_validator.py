@@ -27,5 +27,5 @@ class SchemaValidator:
             data (dict): The JSON document to validate.
 
         """
-        schema = self.metadata.get_table(table_name).schema
+        schema = self.metadata.get_table(table_name).json_schema
         jsonschema.validate(data, schema)

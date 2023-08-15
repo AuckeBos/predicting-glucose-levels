@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from logging import Logger
+from logging import LoggerAdapter
 from typing import Any, List, Optional, Tuple
 
 import pandas as pd
 from kink import inject
+from prefect.logging.loggers import PrefectLogAdapter
 
 from predicting_glucose_levels.data.metadata import Metadata
-from predicting_glucose_levels.data.table_metadata import TableMetadata
 from predicting_glucose_levels.helpers.general import now
 
 
@@ -22,9 +22,9 @@ class AbstractStorage(ABC):
     """
 
     metadata: Metadata
-    logger: Logger
+    logger: LoggerAdapter
 
-    def __init__(self, metadata: Metadata, logger: Logger) -> None:
+    def __init__(self, metadata: Metadata, logger: LoggerAdapter) -> None:
         self.metadata = metadata
         self.logger = logger
 

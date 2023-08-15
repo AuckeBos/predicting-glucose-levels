@@ -12,4 +12,4 @@ class TableMetadata:
     timestamp_col: str
     type: str
     endpoint: str = None
-    schema: dict = None
+    json_schema: dict = None

@@ -4,7 +4,7 @@
     "key_col": "_id",
     "timestamp_col": "dateString",
     "type": "source_table",
-    "schema": {
+    "json_schema": {
         "type": "array",
         "items": {
             "type": "object",

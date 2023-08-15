@@ -9,7 +9,7 @@ class AbstractLoader(ABC):
     A loader is used to load data from a data source.
     """
 
-    def __init__(self, storage):
+    def __init__(self):
         raise NotImplementedError
 
     @abstractmethod

@@ -1,5 +1,4 @@
 import json
-from typing import List
 
 from kink import inject
 
@@ -13,8 +12,6 @@ class Metadata:
     Metadata is a class that contains metadata about the tables in the database. It loads the metadata from JSON files in the metadata directory.
     It is used by the storage classes to get information about the tables, based on the table name.
     """
-
-    tables: List[TableMetadata]
 
     def __init__(self) -> None:
         """

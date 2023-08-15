@@ -1,0 +1,22 @@
+name: predicting-glucose-levels
+prefect-version: 2.11.3
+build: null
+
+push: null
+
+# This deployment only works on an agent that runs on a docker container with image auckebos/predicting-glucose-levels
+pull:
+- prefect.deployments.steps.set_working_directory:
+    directory: /home/glucose/predicting_glucose_levels
+
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+- name: "daily-etl"
+  description: "Run the ETL flow every day at 6:00 AM"
+  schedule:
+    cron: 0 6 * * *
+    timezone: Europe/Amsterdam
+  entrypoint: "flows:etl"
+  work_pool:
+    name: "docker-pool"
+    work_queue_name: "default"

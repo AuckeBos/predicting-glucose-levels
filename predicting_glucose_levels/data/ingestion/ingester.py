@@ -1,7 +1,10 @@
-from logging import Logger
+from logging import LoggerAdapter
 from typing import List
 
 from kink import inject
+from prefect import flow, task
+from prefect.logging.loggers import PrefectLogAdapter
+from pydantic import validator
 
 from predicting_glucose_levels.data.ingestion.loader.abstract_loader import (
     AbstractLoader,
@@ -24,10 +27,14 @@ class Ingester:
 
     data_loader: AbstractLoader
     storage: AbstractStorage
-    logger: Logger
+    logger: LoggerAdapter
+    tables: List[TableMetadata]
 
     def __init__(
-        self, data_loader: AbstractLoader, storage: AbstractStorage, logger: Logger
+        self,
+        data_loader: AbstractLoader,
+        storage: AbstractStorage,
+        logger: LoggerAdapter,
     ):
         self.data_loader = data_loader
         self.storage = storage
