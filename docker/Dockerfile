@@ -10,6 +10,7 @@ RUN apt update && \
     addgroup --gid $GID glucose && \
     adduser --uid $UID --gid $GID --disabled-password --gecos "" ${USERNAME} && \
     echo '${USERNAME} ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+RUN apt install -y gcc
 RUN chmod -R 755 /home/$USERNAME
 
 # Install poetry

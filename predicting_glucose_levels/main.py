@@ -37,7 +37,7 @@ def transform():
     """
     transformers = [GlucoseMeasurementTransformer]
     for transformer in transformers:
-        transformer.etl()
+        transformer().etl()
 
 
 @cli.command

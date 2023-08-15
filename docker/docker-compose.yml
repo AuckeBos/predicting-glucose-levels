@@ -35,6 +35,9 @@ services:
     entrypoint: ["/opt/prefect/entrypoint.sh", "prefect", "server", "start"]
     environment:
       - PREFECT_SERVER_API_HOST=${PREFECT_SERVER_API_HOST}
+      # If you want to access Prefect Server from anywhere other than the Docker host machine, you will need to change
+      # PREFECT_UI_URL to match the external hostname/IP used to load the  UI in your web browser.      
+      - PREFECT_API_URL=${PREFECT_API_URL_FOR_SERVER}
     ports:
       - 4200:4200
 
@@ -44,8 +47,6 @@ services:
     restart: unless-stopped
     env_file:
       - ../.env
-    volumes:
-      - ../predicting_glucose_levels:/home/glucose/predicting_glucose_levels
     depends_on:
       - prefect-server
 
@@ -55,7 +56,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ~/.docker/config.json:/config.json
-    command: prefect-agent
+    command: --interval 3600 prefect-agent
+    restart: unless-stopped
       
 volumes:
   mongodb_data:

@@ -50,13 +50,13 @@ class Ingester:
         self.logger.info(f"Ingesting {len(tables)} tables")
         for table in tables:
             start, end = self.storage.get_window(table.name)
-            self.logger.debug(f"Ingesting {table.name} from {start} to {end}")
+            self.logger.info(f"Ingesting {table.name} from {start} to {end}")
             data = self.data_loader.load(
                 start, end, table.endpoint, table.timestamp_col
             )
             self.storage.upsert(data, table.name)
-            self.logger.debug(
+            self.logger.info(
                 f"Ingested {len(data)} rows for {table.name} during window {start} to {end}"
             )
             self.storage.set_last_runmoment(table.name, end)
-        self.logger.debug("Done ingesting")
+        self.logger.info("Done ingesting")
