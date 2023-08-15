@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from logging import Logger, LoggerAdapter
+from logging import LoggerAdapter
 from typing import Any, List, Optional, Tuple
 
 import pandas as pd

@@ -1,4 +1,4 @@
-from logging import Logger, LoggerAdapter
+from logging import LoggerAdapter
 from typing import List
 
 from kink import inject

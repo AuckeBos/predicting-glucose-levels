@@ -1,5 +1,5 @@
 from ast import Tuple
-from logging import Logger, LoggerAdapter
+from logging import LoggerAdapter
 from typing import Any, List
 
 import pandas as pd

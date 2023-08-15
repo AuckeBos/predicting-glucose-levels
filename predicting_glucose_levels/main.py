@@ -54,7 +54,6 @@ def test():
     Testing function
     """
     print(BaseTransformer.__subclasses__())
-    pass
 
 
 @cli.command

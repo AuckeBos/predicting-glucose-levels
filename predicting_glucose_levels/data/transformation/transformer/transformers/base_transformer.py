@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from logging import Logger, LoggerAdapter
+from logging import LoggerAdapter
 
 from kink import inject
 from prefect.logging.loggers import PrefectLogAdapter
