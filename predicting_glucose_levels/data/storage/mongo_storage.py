@@ -1,5 +1,5 @@
 from ast import Tuple
-from logging import Logger
+from logging import Logger, LoggerAdapter
 from typing import Any, List
 
 import pandas as pd
@@ -30,7 +30,7 @@ class MongoStorage(AbstractStorage):
         client: MongoClient,
         database: Database,
         metadata: Metadata,
-        logger: PrefectLogAdapter,
+        logger: LoggerAdapter,
     ):
         """
         Create a connection to the MongoDB database.

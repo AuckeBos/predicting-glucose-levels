@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from logging import Logger
+from logging import Logger, LoggerAdapter
 
 from kink import inject
 from prefect.logging.loggers import PrefectLogAdapter
@@ -24,7 +24,7 @@ class BaseTransformer(ABC):
     schema_validator: SchemaValidator
     ingester: Ingester
     storage: AbstractStorage
-    logger: PrefectLogAdapter
+    logger: LoggerAdapter
     metadata: Metadata
 
     def __init__(
@@ -32,7 +32,7 @@ class BaseTransformer(ABC):
         storage: AbstractStorage,
         ingester: Ingester,
         schema_validator: SchemaValidator,
-        logger: PrefectLogAdapter,
+        logger: LoggerAdapter,
         metadata: Metadata,
     ):
         self.storage = storage

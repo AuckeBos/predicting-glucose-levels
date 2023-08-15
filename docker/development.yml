@@ -25,29 +25,6 @@ services:
     depends_on:
       - mongodb
     restart: unless-stopped
-  
-  predicting-glucose-levels:
-    build:
-      context: ../
-      dockerfile: docker/Dockerfile
-    container_name: glucose
-    depends_on:
-      - mongodb
-    restart: unless-stopped
-    env_file:
-      - ../.env
-    volumes:
-      - ../predicting_glucose_levels:/home/glucose/predicting_glucose_levels      
-    # ports:
-      # - 4200:4200      
-
-  watchtower:
-    image: containrrr/watchtower
-    container_name: watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ~/.docker/config.json:/config.json
-    command: predicting-glucose-levels
 
   prefect-server:
     image: prefecthq/prefect:2.11.3-python3.8
@@ -62,14 +39,27 @@ services:
       - 4200:4200
 
   prefect-agent:
-    image: prefecthq/prefect:2.11.3-python3.8
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
     container_name: prefect-agent
     restart: unless-stopped
-    entrypoint: ["/opt/prefect/entrypoint.sh", "prefect", "worker", "start", "-p", "default"]
-    environment:
-      - PREFECT_API_URL=${PREFECT_API_URL}
+    entrypoint: ["prefect", "worker", "start", "-p", "docker-pool"]
+    env_file:
+      - ../.env
+    volumes:
+      - ../predicting_glucose_levels:/home/glucose/predicting_glucose_levels
     depends_on:
-      - prefect-server      
+      - prefect-server
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/config.json:/config.json
+    command: predicting-glucose-levels
+
 
 volumes:
   mongodb_data:

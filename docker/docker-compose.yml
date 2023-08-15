@@ -25,15 +25,30 @@ services:
     depends_on:
       - mongodb
     restart: unless-stopped
-  
-  predicting-glucose-levels:
-    image: index.docker.io/auckebos/predicting-glucose-levels:latest
-    container_name: glucose
-    depends_on:
-      - mongodb
+
+  prefect-server:
+    image: prefecthq/prefect:2.11.3-python3.8
+    container_name: prefect-server
     restart: unless-stopped
+    volumes:
+      - prefect:/root/.prefect
+    entrypoint: ["/opt/prefect/entrypoint.sh", "prefect", "server", "start"]
+    environment:
+      - PREFECT_SERVER_API_HOST=${PREFECT_SERVER_API_HOST}
+    ports:
+      - 4200:4200
+
+  prefect-agent:
+    image: index.docker.io/auckebos/predicting-glucose-levels:latest
+    container_name: prefect-agent
+    restart: unless-stopped
+    entrypoint: ["prefect", "worker", "start", "-p", "docker-pool"]
     env_file:
       - ../.env
+    volumes:
+      - ../predicting_glucose_levels:/home/glucose/predicting_glucose_levels
+    depends_on:
+      - prefect-server
 
   watchtower:
     image: containrrr/watchtower
@@ -41,29 +56,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ~/.docker/config.json:/config.json
-    command: predicting-glucose-levels
-
-  prefect-server:
-    image: prefecthq/prefect:2.10.17-python3.11
-    container_name: prefect-server
-    restart: unless-stopped
-    volumes:
-      - prefect:/root/.prefect
-    entrypoint: ["/opt/prefect/entrypoint.sh", "prefect", "server", "start"]
-    environment:
-      - PREFECT_SERVER_API_HOST=0.0.0.0
-    ports:
-      - 4200:4200
-
-  prefect-agent:
-    image: prefecthq/prefect:2.10.17-python3.11
-    container_name: prefect-agent
-    restart: unless-stopped
-    entrypoint: ["/opt/prefect/entrypoint.sh", "prefect", "agent", "start", "-q", "default", "-p", "default"]
-    environment:
-      - PREFECT_API_URL=${PREFECT_API_URL}
-    depends_on:
-      - prefect-server      
+    command: prefect-agent
       
 volumes:
   mongodb_data:

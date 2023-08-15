@@ -33,7 +33,7 @@ def _get_logger(name: str):
     """
     Get a logger with a file handler.
     """
-    logger = get_run_logger()
+    logger = logging.getLogger(name)
     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     os.makedirs(LOGS_DIR, exist_ok=True)
     fhandler = logging.FileHandler(filename=LOGS_FILE, mode="a")
@@ -59,8 +59,7 @@ def bootstrap_di():
     )
     di[Database] = lambda _di: _di[MongoClient][os.getenv("MONGO_DB", "MYDB")]
     # Logging
-    di[logging.Logger] = lambda di: _get_logger("logger")
-    di[PrefectLogAdapter] = lambda di: get_run_logger()
+    di[logging.LoggerAdapter] = lambda di: _get_logger("logger")
     # Set the NightscoutLoader as the default loader.
     di[AbstractLoader] = lambda _di: NightscoutLoader(
         os.getenv("NIGHTSCOUT_URI"), os.getenv("NIGHTSCOUT_SECRET")

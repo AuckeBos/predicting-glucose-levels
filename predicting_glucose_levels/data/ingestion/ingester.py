@@ -1,4 +1,4 @@
-from logging import Logger
+from logging import Logger, LoggerAdapter
 from typing import List
 
 from kink import inject
@@ -27,14 +27,14 @@ class Ingester:
 
     data_loader: AbstractLoader
     storage: AbstractStorage
-    logger: PrefectLogAdapter
+    logger: LoggerAdapter
     tables: List[TableMetadata]
 
     def __init__(
         self,
         data_loader: AbstractLoader,
         storage: AbstractStorage,
-        logger: PrefectLogAdapter,
+        logger: LoggerAdapter,
     ):
         self.data_loader = data_loader
         self.storage = storage

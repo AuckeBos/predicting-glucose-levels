@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from logging import Logger
+from logging import Logger, LoggerAdapter
 from typing import Any, List, Optional, Tuple
 
 import pandas as pd
@@ -22,9 +22,9 @@ class AbstractStorage(ABC):
     """
 
     metadata: Metadata
-    logger: PrefectLogAdapter
+    logger: LoggerAdapter
 
-    def __init__(self, metadata: Metadata, logger: PrefectLogAdapter) -> None:
+    def __init__(self, metadata: Metadata, logger: LoggerAdapter) -> None:
         self.metadata = metadata
         self.logger = logger
 

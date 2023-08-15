@@ -22,7 +22,6 @@ def cli():
 
 @cli.command
 @inject
-@flow(validate_parameters=False)
 def ingest(metadata: Metadata):
     """
     Ingest all source tables.
@@ -39,19 +38,14 @@ def ingest(metadata: Metadata):
 
 
 @cli.command
-@flow(validate_parameters=False)
 def transform():
     """
     Run all defined transformers.
     """
 
-    @task
-    def transform_one(_cls):
-        transformer = _cls()
+    transformers = [c() for c in BaseTransformer.__subclasses__()]
+    for transformer in transformers:
         transformer.etl()
-
-    for _cls in BaseTransformer.__subclasses__():
-        transform_one(_cls)
 
 
 @cli.command
@@ -74,6 +68,6 @@ def help():
 
 if __name__ == "__main__":
     pass
-    ingest()
+    # ingest()
     # transform()
     # cli()
