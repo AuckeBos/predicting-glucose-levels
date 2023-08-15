@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from logging import LoggerAdapter
 
 from kink import inject
-from prefect.logging.loggers import PrefectLogAdapter
 
 from predicting_glucose_levels.data.ingestion.ingester import Ingester
 from predicting_glucose_levels.data.metadata import Metadata

@@ -6,9 +6,7 @@ from prefect.deployments.deployments import Deployment
 from predicting_glucose_levels.data import table_metadata
 from predicting_glucose_levels.data.ingestion.ingester import Ingester
 from predicting_glucose_levels.data.metadata import Metadata
-from predicting_glucose_levels.data.transformation.transformer.transformers.base_transformer import (
-    BaseTransformer,
-)
+from predicting_glucose_levels.data.transformation.transformer.transformers import *
 from predicting_glucose_levels.data.transformation.transformer.transformers.glucose_measurements_transformer import (
     GlucoseMeasurementTransformer,
 )
@@ -37,8 +35,7 @@ def transform():
     """
     Run all defined transformers.
     """
-
-    transformers = [c() for c in BaseTransformer.__subclasses__()]
+    transformers = [GlucoseMeasurementTransformer]
     for transformer in transformers:
         transformer.etl()
 

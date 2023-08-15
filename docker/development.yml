@@ -44,7 +44,6 @@ services:
       dockerfile: docker/Dockerfile
     container_name: prefect-agent
     restart: unless-stopped
-    entrypoint: ["prefect", "worker", "start", "-p", "docker-pool"]
     env_file:
       - ../.env
     volumes:

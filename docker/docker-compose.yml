@@ -42,7 +42,6 @@ services:
     image: index.docker.io/auckebos/predicting-glucose-levels:latest
     container_name: prefect-agent
     restart: unless-stopped
-    entrypoint: ["prefect", "worker", "start", "-p", "docker-pool"]
     env_file:
       - ../.env
     volumes:

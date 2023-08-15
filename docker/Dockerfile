@@ -17,6 +17,7 @@ RUN pip install poetry
 # Copy files
 COPY --chown=${USERNAME}:${USERNAME} ./pyproject.toml ./poetry.lock ./docker/entrypoint.sh /home/${USERNAME}/
 COPY --chown=${USERNAME}:${USERNAME} ./predicting_glucose_levels /home/${USERNAME}/predicting_glucose_levels    
+RUN chmod +x /home/${USERNAME}/entrypoint.sh
 
 # Install deps
 WORKDIR /home/${USERNAME}
@@ -24,3 +25,5 @@ RUN poetry config virtualenvs.create false && \
     poetry install --no-interaction --no-ansi
 
 USER $USERNAME
+ENV USERNAME=${USERNAME}
+ENTRYPOINT ["/bin/sh", "-c", "/home/${USERNAME}/entrypoint.sh"]

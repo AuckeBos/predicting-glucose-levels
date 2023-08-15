@@ -7,7 +7,7 @@ push: null
 # This deployment only works on an agent that runs on a docker container with image auckebos/predicting-glucose-levels
 pull:
 - prefect.deployments.steps.set_working_directory:
-    directory: /home/glucose
+    directory: /home/glucose/predicting_glucose_levels
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
@@ -16,7 +16,7 @@ deployments:
   schedule:
     cron: 0 6 * * *
     timezone: Europe/Amsterdam
-  entrypoint: "predicting_glucose_levels.flows:etl"
+  entrypoint: "flows:etl"
   work_pool:
     name: "docker-pool"
     work_queue_name: "default"
